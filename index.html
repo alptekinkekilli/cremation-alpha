@@ -419,7 +419,9 @@ var RELEASE = {version: "0.1.0-alpha.4", base: "https://github.com/alptekinkekil
     if (!reduce) timer = setTimeout(function () { show(cur + 1); }, 8000);  /* a clip that cannot play must not hold the slider */
   }
   vids.forEach(function (v, i) {
-    v.addEventListener("playing", function () { slides[i].classList.add("live"); });
+    /* the video covers the picture only once a real frame was shown (requestVideoFrameCallback) or the clock has moved */
+    v.addEventListener("playing", function () { if (v.requestVideoFrameCallback) v.requestVideoFrameCallback(function () { slides[i].classList.add("live"); }); });
+    v.addEventListener("timeupdate", function () { if (v.currentTime > 0.15 && !v.paused) slides[i].classList.add("live"); });
     v.addEventListener("ended", function () { if (cur === i) show(cur + 1); });
   });
   dots.forEach(function (d, k) { d.addEventListener("click", function () { show(k); }); });
