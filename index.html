@@ -4,6 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#120d0a">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Cremation: Outrun the Dawn, alpha">
+<meta property="og:description" content="Güneş çizgisinin önünde koş, kuleye saldır, kuleyi savun. Windows ve macOS için alpha testi.">
+<meta property="og:image" content="https://cremation-alpha.vercel.app/media/og.jpg">
+<meta property="og:url" content="https://cremation-alpha.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">
 <title>Cremation: Outrun the Dawn, alpha</title>
 <meta name="description" content="Cremation: Outrun the Dawn: güneş çizgisinin önünde koş, kuleye saldır, kuleyi savun. Alpha testi: hikâye, oyun, yapılanlar, sırada olanlar, indirme ve kurulum.">
 <style>
@@ -86,6 +97,10 @@ th{color:var(--dim);font-weight:600;width:24%}
 .note{border-left:3px solid var(--ember);padding:4px 14px;color:var(--dim);margin:18px 0}
 footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px solid var(--line);padding-top:18px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.hero{touch-action:pan-y}
+h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,88%);height:auto;filter:drop-shadow(0 0 22px rgba(18,13,10,.95)) drop-shadow(0 0 8px rgba(18,13,10,.9)) drop-shadow(0 2px 4px rgba(0,0,0,.8))}
+.dot{position:relative}.dot:before{content:"";position:absolute;inset:-18px -5px}
+@media (max-width:700px){.hero{min-height:78vh}.hero video.slide.on{opacity:.6}}
 </style>
 </head>
 <body>
@@ -95,11 +110,11 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
 </nav>
 
 <header class="hero">
-  <video class="slide on" muted playsinline preload="auto" poster="media/posters/hero_grok.jpg" aria-hidden="true"><source src="media/hero_grok.mp4" type="video/mp4"></video>
-  <video class="slide" muted playsinline preload="auto" poster="media/story_8.jpg" aria-hidden="true"><source src="media/hero.mp4" type="video/mp4"></video>
+  <video class="slide on" muted playsinline preload="auto" poster="media/posters/hero_grok.jpg" aria-hidden="true" style="object-position:64% 50%"><source src="media/hero_grok.mp4" type="video/mp4"></video>
+  <video class="slide" muted playsinline preload="auto" poster="media/posters/hero.jpg" aria-hidden="true"><source src="media/hero.mp4" type="video/mp4"></video>
   <div class="in">
     <span class="tag">alpha test <span class="ver"></span></span>
-    <h1>Cremation:<br><em>Outrun the Dawn</em></h1>
+    <h1 class="logo"><img src="media/logo.png" width="960" height="291" alt="Cremation: Outrun the Dawn"></h1>
     <p class="lead">Arkandan Güneş Çizgisi geliyor ve geçtiği yeri yakıyor. Altı kişilik ekiple önce koşarsın. Kuleye varınca onu elinde tutan isyancı madencilerden alır, sonra gece çıkan yaratıklara karşı tutarsın. Beş kule var; sonunda Helion duvarının kapısı.</p>
     <a class="btn" href="#indir">Alpha'yı indir</a><a class="btn ghost" href="#hikaye">Hikâyeyi oku</a>
     <div class="dots" role="group" aria-label="Açılış videoları"><button class="dot on" type="button" aria-label="Video 1: asker ekibi"></button><button class="dot" type="button" aria-label="Video 2: şafak çizgisi"></button></div>
@@ -115,7 +130,7 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
       <figure><img loading="lazy" src="media/story_2.jpg" alt="Madenci kentinin ve kulelerin üstünden görünüş, dumanlı gökyüzü"><figcaption>Maden kenti ve kuleler (oyunun giriş filminden).</figcaption></figure></div>
     <div class="beat"><div><span class="yr">1. – 4. yıl</span><h3>Yer hareket etmeye başladı</h3><p>Kazı gezegeni uyandırdı. Depremler başladı, lav püskürdü, gayzerler bir sondajı ikiye böldü. Hatlar tekrar tekrar zarar gördü. Koşarken bunu ayağında duyarsın: zemin sarsılır, çatlaklar açılır, tepeden kaya yağar, askerler savrulur.</p></div>
       <figure><img loading="lazy" src="media/story_1.jpg" alt="Lav çatlakları olan yanık, karanlık düzlük"><figcaption>Çatlayan, kül kaplı zemin.</figcaption></figure></div>
-    <div class="beat"><div><span class="yr">Gece</span><h3>Alacakaranlıkta uyananlar</h3><p>Duskborn denen yaratıklar gündüz külün altında uyur, alacakaranlıkta çıkar. Sığınaklar onların yuvalarının üstüne kurulmuştu. Kuleyi savunurken dalgalar gece boyunca ağırlaşır.</p></div>
+    <div class="beat"><div><span class="yr">Gece</span><h3>Alacakaranlıkta uyananlar</h3><p>Duskborn denen yaratıkların yuvalarını vahşi madencilik, depremler ve lav yıktı. Gündüz külün altında, ulaşılması zor çatlaklarda uyurlar; alacakaranlıkta çıkıp madencilere saldırırlar. Sığınaklar ve maden kuleleri tam onların yuvalarının üstüne kurulmuştu. Kuleleri savunmak zorunda kalan madenciler, gece boyunca giderek büyüyen Duskborn istila dalgalarıyla savaşır. Askerler onlara ne yardım edebilir ne de savunabilir. Madenciler şirkete karşı isyan eder.</p></div>
       <figure><img loading="lazy" src="media/story_4.jpg" alt="Bir kulenin dibinde örümcek benzeri yaratıklar, turuncu gün batımı"><figcaption>Kule ve sürünenler.</figcaption></figure></div>
     <div class="beat"><div><span class="yr">Şafak</span><h3>Cremation Sweep: Güneş Çizgisi</h3><p>Şafak doğal bir şafak değil. Yörüngedeki aynalar (Şafak Dizisi) yüzeyi batıdan doğuya, saatte 25 km hızla, bir çizgi halinde yakıyor. Çizginin önünde gece, arkasında kavrulmuş gün. Gölgede kalan yaşar.</p></div>
       <figure><img loading="lazy" src="media/story_5.jpg" alt="Gökyüzündeki halkadan yere inen ışın"><figcaption>Yörüngeden yüzeye ışın.</figcaption></figure></div>
@@ -133,9 +148,9 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
   <div class="wrap-s"><span class="eyebrow">Oyun</span><h2>Koşu, saldırı, savunma</h2>
   <p class="dim">Her kulede aynı altı asker, aynı sırayla üç iş: koş, kuleye saldır, kuleyi tut.</p></div>
   <div class="grid g2">
-    <figure><video src="media/play_clip.mp4" poster="media/posters/play_clip.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Koşu bölümünden oyun içi görüntü"></video><figcaption><b>1. Koşu.</b> Güneş Çizgisinin önünde koş. Kaya, çatlak, lav, gayzer ve rüzgâr yolunu keser. Zıpla, kay, <kbd>W</kbd> ile hızlan, <kbd>Tab</kbd> ile lideri değiştir, <kbd>E</kbd> ile "beni takip et" de, yaralıya <kbd>X</kbd> ile medik çağır. Altı kişi ölmez; yaralanır ve geride kalır.</figcaption></figure>
-    <figure><img loading="lazy" src="media/play_assault.jpg" alt="Saldırı arenası, oyun içi görüntü"><figcaption><b>2. Saldırı.</b> Kuleyi isyancı madenciler tutuyor. Siperden siper ilerle, kapıya var. Bomba, roket, mayın, yatma ve emekleme bu bölümde.</figcaption></figure>
-    <figure><img loading="lazy" src="media/play_yard.jpg" alt="Kule savunması, oyun içi görüntü"><figcaption><b>3. Savunma.</b> Kule senin. Beş dalga boyunca duvarları, roketatarı ve makineli tüfeği yönet, gece çıkan yaratıkları durdur, dalga aralarında silahlarını yükselt.</figcaption></figure>
+    <figure><video src="media/play_clip.mp4" poster="media/posters/play_clip.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Koşu bölümünden oyun içi görüntü"></video><figcaption><b>1. Koşu.</b> Güneş Çizgisinin önünde koş. Kaya, çatlak, lav, gayzer ve rüzgâr yolunu keser. <kbd>Boşluk</kbd> ile zıpla: kısa basarsan kısa zıplarsın, basılı tutarsan uzağa gidersin, <kbd>W</kbd> ile hızlanırken zıplarsan daha da uzağa; nereye ineceğini tuşu ne kadar tuttuğunla ayarlarsın. <kbd>Shift</kbd> ile kay, <kbd>Tab</kbd> ile lideri değiştir, <kbd>E</kbd> ile "beni takip et" de, yaralıya <kbd>X</kbd> ile medik çağır. Altı kişi ölmez; yaralanır ve geride kalır.</figcaption></figure>
+    <figure><img loading="lazy" src="media/play_assault.jpg" alt="Saldırı arenası, oyun içi görüntü"><figcaption><b>2. Saldırı.</b> Kuleleri isyancı madenciler tutuyor. Siperden siper ilerle: zıpla, saklan, kay ve bunker kapısına var. Bu bölümde bomba, roket, mayın ve seni siperden çıkmaya zorlayan dronlar var; yatar, emekler, kayar ve zıplarsın.</figcaption></figure>
+    <figure><img loading="lazy" src="media/play_yard.jpg" alt="Kule savunması, oyun içi görüntü"><figcaption><b>3. Savunma.</b> Kule artık senin. Beş dalga boyunca duvarları, roketatarı ve makineli tüfeği yönet, gece çıkan Duskborn'ları durdur, asit saldırılarından korun, uçanları roketle düşür. Hareket halinde kal, yuvarlan, zıpla: bir uçan seni kapıp götürmesin. Dalga aralarında silahlarını akıllıca yükselt.</figcaption></figure>
     <figure><img loading="lazy" src="media/cap_3.jpg" alt="Sığınakta toplanmış ekip"><figcaption><b>Sığınak.</b> Koşudan sonra doktor yaraları sarar. İsimler her ekranda aynı.</figcaption></figure>
   </div>
 </section>
@@ -144,8 +159,8 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
   <div class="wrap-s"><span class="eyebrow">Saldırı ve savunma</span><h2>Kuleye varınca iş değişir</h2>
   <p class="dim">Kule isyancı madencilerin elinde. Önce onu alırsın, sonra geceye karşı tutarsın.</p></div>
   <div class="cols">
-    <div><h3>Saldırı: kuleyi geri al</h3><p>Ekip sırtı aşıp 150 metrelik açık zemine çıkar. Çatıdaki iki makineli tüfek yuvası ve siperlerin arkasındaki isyancı madenciler ateş eder; arkandan Güneş Çizgisi yetişir, 120 saniyen var. Kayalardan, vagonlardan ve molozdan oluşan üç siper hattını geçip kapıya varman gerekir. Pazardan aldığın roketatar yuvaları susturur, makineli tüfek bastırır, bomba kum torbalarını dağıtır. Mayın var: eğilerek, yatarak ya da emekleyerek geç. Blokhaus düşünce kapı açılır; lider kapıya varınca kule senindir.</p></div>
-    <div><h3>Savunma: kuleyi tut</h3><p>Kule senin olunca yaratıklar çıkar. Beş dalga boyunca duvarlara yürürler. Askerler kendiliğinden ateş eder; sen tehlikeli olanı işaretler, bomba atar, havadakini roketle vurursun. Duvar bölümleri hasar alır ve yıkılabilir. Dalga aralarında silahını yükseltirsin: salvo, bomba, bombacılar, hava roketi. Gece bastırdıkça dalgalar ağırlaşır.</p></div>
+    <div><h3>Saldırı: kuleyi geri al</h3><p>Ekip sırtı aşıp 150 metrelik açık zemine çıkar. Çatıdaki iki makineli tüfek yuvası ve siperlerin arkasındaki isyancı madenciler ateş eder; arkandan Güneş Çizgisi yetişir, 120 saniyen var. Kayalardan, vagonlardan ve molozdan oluşan üç siper hattını geçip kapıya varman gerekir. Pazardan aldığın roketatar yuvaları susturur, makineli tüfek bastırır, bomba kum torbalarını dağıtır. Mayın var: eğilerek, yatarak ya da emekleyerek geç. Bunker düşünce kapı açılır; lider kapıya varınca kule senindir.</p></div>
+    <div><h3>Savunma: kuleyi tut</h3><p>Kule senin olunca Duskborn'lar çıkar. Beş dalga boyunca duvarlara yürürler. Askerler kendiliğinden ateş eder; sen tehlikeli olanı işaretler, bomba atar, havadakini roketle vurursun. Duvar bölümleri hasar alır ve yıkılabilir. Dalga aralarında silahını yükseltirsin: salvo, bomba, bombacılar, hava roketi. Gece bastırdıkça dalgalar ağırlaşır.</p></div>
   </div>
   <div class="grid g3">
     <figure class="vid"><video class="hv" src="media/fgt_assault_r1.mp4" poster="media/posters/fgt_assault_r1.jpg" loop muted playsinline preload="metadata" aria-label="Saldırı, 1 Ashfall bölgesi"></video><figcaption><b>Saldırı.</b> 1 Ashfall bölgesi.</figcaption></figure>
@@ -170,7 +185,7 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
       <p>Roketatar iki roketle bir makineli tüfek yuvasını susturur (yaklaşık 100 m). Makineli tüfek yuvayı bastırır, yarı hızda ateş ettirir. Bomba, kum torbası sırasını dağıtır. Hiçbir şey almak zorunda değilsin: pazarı kapatıp doğrudan saldırıya geçebilirsin.</p></div>
   </div>
   <div class="grid g2" style="margin-top:14px">
-    <figure><img loading="lazy" src="media/play_rocket.jpg" alt="Saldırıda roket atışı"><figcaption><b>Saldırıda.</b> Aldığın roketatar sahada: roket namludan çıkar, arkadan alev püskürür, hedef blokhaus.</figcaption></figure>
+    <figure><img loading="lazy" src="media/play_rocket.jpg" alt="Saldırıda roket atışı"><figcaption><b>Saldırıda.</b> Aldığın roketatar sahada: roket namludan çıkar, arkadan alev püskürür, hedef bunker.</figcaption></figure>
   </div>
 </section>
 
@@ -260,7 +275,7 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
   <div class="cols">
     <div><h3>Koşu</h3><ul class="ticks">
       <li>Güneş Çizgisinin önünde koşu: kaya, çatlak, lav, gayzer, rüzgâr ve yağan taşlar.</li>
-      <li>Zıplama, kayma, hızlanma ve lider değiştirme; düşme, yuvarlanma ve kalkış hareketleri.</li>
+      <li>Değişken zıplama (kısa, uzun, koşarken daha uzun), kayma, hızlanma ve lider değiştirme; düşme, yuvarlanma ve kalkış hareketleri.</li>
       <li>Beş bölge; her birinin kendi zemini, göğü ve havası var.</li>
       <li>İskeletli askerler; <kbd>F10</kbd> ile Minecraft ve Lego görünümü (koşuda).</li></ul></div>
     <div><h3>Saldırı ve savunma</h3><ul class="ticks">
@@ -333,7 +348,7 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
 
   <h2 style="margin-top:36px">Kontroller</h2>
   <div class="tw"><table>
-    <tr><th>Koşu</th><td><kbd>A</kbd> <kbd>D</kbd> yön · <kbd>W</kbd> hızlan · <kbd>S</kbd> geriye bak · <kbd>Boşluk</kbd> zıpla (basılı tut: yüksek) · <kbd>Shift</kbd> kay · <kbd>Tab</kbd> lideri değiştir · <kbd>E</kbd> "beni takip et" · <kbd>X</kbd> sağlık çantası · <kbd>R</kbd> yeniden başlat (iki kez bas)</td></tr>
+    <tr><th>Koşu</th><td><kbd>A</kbd> <kbd>D</kbd> yön · <kbd>W</kbd> hızlan · <kbd>S</kbd> geriye bak · <kbd>Boşluk</kbd> zıpla: kısa bas = kısa zıplama, basılı tut = uzak zıplama, <kbd>W</kbd> ile hızlanırken = en uzak · <kbd>Shift</kbd> kay · <kbd>Tab</kbd> lideri değiştir · <kbd>E</kbd> "beni takip et" · <kbd>X</kbd> sağlık çantası · <kbd>R</kbd> yeniden başlat (iki kez bas)</td></tr>
     <tr><th>Saldırı</th><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> yürü · fare nişan al · sol tık hedefi işaretle · sağ tık ya da <kbd>G</kbd> bomba at · <kbd>F</kbd> işaretli yuvaya roket · <kbd>Q</kbd> ekibi nişan aldığın siperin arkasına gönder · <kbd>E</kbd> ekibi geri çağır · <kbd>C</kbd> eğil, yat, kalk · <kbd>Boşluk</kbd> engeli aş · <kbd>Shift</kbd> kirişin altından kay</td></tr>
     <tr><th>Savunma</th><td>Fare nişan al · sol tık hedefi işaretle · sağ tık ya da <kbd>G</kbd> bomba at · <kbd>F</kbd> hava roketi · <kbd>X</kbd> düşen asker varken medik · <kbd>Tab</kbd> komutanı geri al. Ekrandaki ipucu satırı tuşları gösterir.</td></tr>
   </table></div>
@@ -373,20 +388,35 @@ var RELEASE = {version: "0.1.0-alpha.4", base: "https://github.com/alptekinkekil
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var canHover = window.matchMedia && matchMedia("(hover: hover)").matches;
   function go(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
-  /* the hero: two clips one after the other (the soldiers, then the dawn line); a dot picks one */
+  /* the hero: two clips one after the other (the soldiers, then the dawn line); a dot, a swipe or the timer picks one */
   var slides = Array.prototype.slice.call(document.querySelectorAll(".hero .slide"));
   var dots = Array.prototype.slice.call(document.querySelectorAll(".hero .dot"));
-  var cur = 0;
+  var cur = 0, timer = 0;
+  function playSafe(v) {
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {
+      /* a phone may refuse a clip that is still invisible: ask again once it has faded in */
+      setTimeout(function () { if (slides[cur] === v && !reduce) { var q = v.play(); if (q && q.catch) q.catch(function () {}); } }, 500);
+    });
+  }
   function show(i) {
     cur = (i + slides.length) % slides.length;
     slides.forEach(function (v, k) {
       v.classList.toggle("on", k === cur);
-      if (k === cur) { v.currentTime = 0; if (!reduce) go(v); } else { v.pause(); }
+      if (k === cur) { try { v.currentTime = 0; } catch (e) {} if (!reduce) playSafe(v); } else { v.pause(); }
     });
     dots.forEach(function (d, k) { d.classList.toggle("on", k === cur); d.setAttribute("aria-current", k === cur ? "true" : "false"); });
+    clearTimeout(timer);
+    if (!reduce) timer = setTimeout(function () { show(cur + 1); }, 8000);  /* a clip that cannot play must not hold the slider */
   }
   slides.forEach(function (v) { v.addEventListener("ended", function () { show(cur + 1); }); });
   dots.forEach(function (d, k) { d.addEventListener("click", function () { show(k); }); });
+  var hero = document.querySelector(".hero"), sx = 0, sy = 0;
+  hero.addEventListener("touchstart", function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; if (!reduce && slides[cur].paused) playSafe(slides[cur]); }, {passive: true});
+  hero.addEventListener("touchend", function (e) {
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) show(cur + (dx < 0 ? 1 : -1));  /* a swipe left shows the next clip, right the one before */
+  }, {passive: true});
   show(0);
   /* every other clip plays while the pointer is over it; on touch screens it gets its controls */
   Array.prototype.forEach.call(document.querySelectorAll("video.hv"), function (v) {
