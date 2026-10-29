@@ -39,7 +39,9 @@ nav a:hover,nav a:focus-visible{color:var(--ember2)}
 nav .go{margin-left:auto;background:var(--ember);color:#1a0d05;font-weight:700;border-radius:6px;padding:4px 12px}
 nav .go:hover{color:#1a0d05;background:var(--ember2)}
 .hero{position:relative;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));min-height:min(86vh,720px);display:grid;align-items:end;overflow:hidden;background:#000}
-.hero video.slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}.hero video.slide.on{opacity:.82}
+.hero .slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}.hero .slide.on{opacity:.82}
+.hero .slide .ph,.hero .slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .slide video{opacity:0;transition:opacity .5s ease}.hero .slide.live video{opacity:1}
 .dots{display:flex;gap:10px;margin-top:6px}.dot{width:34px;height:6px;border-radius:4px;border:0;padding:0;background:rgba(241,230,216,.35);cursor:pointer}.dot.on{background:var(--ember)}.dot:focus-visible{outline:3px solid var(--ember2);outline-offset:3px}
 figure.vid{position:relative}figure.vid:after{content:"▶ üzerine gel";position:absolute;top:10px;right:10px;background:rgba(18,13,10,.75);color:var(--fg);font-size:.75rem;letter-spacing:.06em;padding:3px 10px;border-radius:99px;pointer-events:none;transition:opacity .2s}figure.vid.playing:after{opacity:0}
 video.hv{cursor:pointer}
@@ -100,7 +102,11 @@ footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px so
 .hero{touch-action:pan-y}
 h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,88%);height:auto;filter:drop-shadow(0 0 22px rgba(18,13,10,.95)) drop-shadow(0 0 8px rgba(18,13,10,.9)) drop-shadow(0 2px 4px rgba(0,0,0,.8))}
 .dot{position:relative}.dot:before{content:"";position:absolute;inset:-18px -5px}
-@media (max-width:700px){.hero{min-height:78vh}.hero video.slide.on{opacity:.6}}
+@media (max-width:700px){.hero{min-height:78vh}.hero .slide.on{opacity:.6}}
+.lead-toggle{display:flex;align-items:flex-start;gap:10px;width:100%;max-width:56ch;margin:16px 0 22px;padding:0;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:default}
+.hero{grid-template-columns:minmax(0,1fr)}.hero .in{min-width:0}.lead-toggle{min-width:0}
+.lead-toggle:disabled{color:inherit}.lead-toggle .lead{margin:0;flex:1;min-width:0}.lead-toggle .chev{display:none}
+@media (max-width:700px){.lead-toggle{align-items:center;cursor:pointer}.lead-toggle .lead{font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lead-toggle[aria-expanded="true"] .lead{white-space:normal;overflow:visible;font-size:1.2rem}.lead-toggle .chev{display:inline-block;flex:none;color:var(--ember2);font-size:1.15rem;line-height:1;transition:transform .2s}.lead-toggle[aria-expanded="true"] .chev{transform:rotate(180deg);align-self:flex-start;margin-top:.35em}.lead-toggle:focus-visible{outline:3px solid var(--ember2);outline-offset:3px;border-radius:6px}}
 </style>
 </head>
 <body>
@@ -110,12 +116,12 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
 </nav>
 
 <header class="hero">
-  <video class="slide on" muted playsinline preload="auto" poster="media/posters/hero_grok.jpg" aria-hidden="true" style="object-position:64% 50%"><source src="media/hero_grok.mp4" type="video/mp4"></video>
-  <video class="slide" muted playsinline preload="auto" poster="media/posters/hero.jpg" aria-hidden="true"><source src="media/hero.mp4" type="video/mp4"></video>
+  <div class="slide on" aria-hidden="true"><img class="ph" src="media/posters/hero_grok.jpg" alt="" fetchpriority="high" style="object-position:64% 50%"><video muted playsinline preload="auto" poster="media/posters/hero_grok.jpg" style="object-position:64% 50%"><source src="media/hero_grok.mp4" type="video/mp4"></video></div>
+  <div class="slide" aria-hidden="true"><img class="ph" src="media/posters/hero.jpg" alt=""><video muted playsinline preload="auto" poster="media/posters/hero.jpg"><source src="media/hero.mp4" type="video/mp4"></video></div>
   <div class="in">
     <span class="tag">alpha test <span class="ver"></span></span>
     <h1 class="logo"><img src="media/logo.png" width="960" height="291" alt="Cremation: Outrun the Dawn"></h1>
-    <p class="lead">Arkandan Güneş Çizgisi geliyor ve geçtiği yeri yakıyor. Altı kişilik ekiple önce koşarsın. Kuleye varınca onu elinde tutan isyancı madencilerden alır, sonra gece çıkan yaratıklara karşı tutarsın. Beş kule var; sonunda Helion duvarının kapısı.</p>
+    <button class="lead-toggle" type="button" aria-expanded="false" aria-controls="lead"><span class="lead" id="lead">Arkandan Güneş Çizgisi geliyor ve geçtiği yeri yakıyor. Altı kişilik ekiple önce koşarsın. Kuleye varınca onu elinde tutan isyancı madencilerden alır, sonra gece çıkan yaratıklara karşı tutarsın. Beş kule var; sonunda Helion duvarının kapısı.</span><span class="chev" aria-hidden="true">&#9662;</span></button>
     <a class="btn" href="#indir">Alpha'yı indir</a><a class="btn ghost" href="#hikaye">Hikâyeyi oku</a>
     <div class="dots" role="group" aria-label="Açılış videoları"><button class="dot on" type="button" aria-label="Video 1: asker ekibi"></button><button class="dot" type="button" aria-label="Video 2: şafak çizgisi"></button></div>
   </div>
@@ -388,36 +394,48 @@ var RELEASE = {version: "0.1.0-alpha.4", base: "https://github.com/alptekinkekil
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var canHover = window.matchMedia && matchMedia("(hover: hover)").matches;
   function go(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
-  /* the hero: two clips one after the other (the soldiers, then the dawn line); a dot, a swipe or the timer picks one */
+  /* the hero: two clips one after the other (the soldiers, then the dawn line); a dot, a swipe or the timer picks one.
+     Each slide is a plain picture with its video on top: the video shows only once it plays, so a phone that paints a video black (or refuses to play it) still shows the picture. */
   var slides = Array.prototype.slice.call(document.querySelectorAll(".hero .slide"));
+  var vids = slides.map(function (s) { return s.querySelector("video"); });
   var dots = Array.prototype.slice.call(document.querySelectorAll(".hero .dot"));
   var cur = 0, timer = 0;
-  function playSafe(v) {
-    var p = v.play();
+  function playSafe(i) {
+    var v = vids[i], p = v.play();
     if (p && p.catch) p.catch(function () {
       /* a phone may refuse a clip that is still invisible: ask again once it has faded in */
-      setTimeout(function () { if (slides[cur] === v && !reduce) { var q = v.play(); if (q && q.catch) q.catch(function () {}); } }, 500);
+      setTimeout(function () { if (cur === i && !reduce) { var q = v.play(); if (q && q.catch) q.catch(function () {}); } }, 500);
     });
   }
   function show(i) {
     cur = (i + slides.length) % slides.length;
-    slides.forEach(function (v, k) {
-      v.classList.toggle("on", k === cur);
-      if (k === cur) { try { v.currentTime = 0; } catch (e) {} if (!reduce) playSafe(v); } else { v.pause(); }
+    slides.forEach(function (s, k) {
+      s.classList.toggle("on", k === cur);
+      if (k === cur) { try { vids[k].currentTime = 0; } catch (e) {} if (!reduce) playSafe(k); }
+      else { vids[k].pause(); s.classList.remove("live"); }
     });
     dots.forEach(function (d, k) { d.classList.toggle("on", k === cur); d.setAttribute("aria-current", k === cur ? "true" : "false"); });
     clearTimeout(timer);
     if (!reduce) timer = setTimeout(function () { show(cur + 1); }, 8000);  /* a clip that cannot play must not hold the slider */
   }
-  slides.forEach(function (v) { v.addEventListener("ended", function () { show(cur + 1); }); });
+  vids.forEach(function (v, i) {
+    v.addEventListener("playing", function () { slides[i].classList.add("live"); });
+    v.addEventListener("ended", function () { if (cur === i) show(cur + 1); });
+  });
   dots.forEach(function (d, k) { d.addEventListener("click", function () { show(k); }); });
   var hero = document.querySelector(".hero"), sx = 0, sy = 0;
-  hero.addEventListener("touchstart", function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; if (!reduce && slides[cur].paused) playSafe(slides[cur]); }, {passive: true});
+  hero.addEventListener("touchstart", function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; if (!reduce && vids[cur].paused) playSafe(cur); }, {passive: true});
   hero.addEventListener("touchend", function (e) {
     var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
     if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) show(cur + (dx < 0 ? 1 : -1));  /* a swipe left shows the next clip, right the one before */
   }, {passive: true});
   show(0);
+  /* the story line under the logo: one line with an arrow on a phone, the whole text after a tap */
+  var tog = document.querySelector(".lead-toggle"), narrow = window.matchMedia ? matchMedia("(max-width:700px)") : {matches: false};
+  function syncLead() { tog.disabled = !narrow.matches; if (!narrow.matches) tog.setAttribute("aria-expanded", "true"); else if (!tog.dataset.touched) tog.setAttribute("aria-expanded", "false"); }
+  tog.addEventListener("click", function () { tog.dataset.touched = "1"; tog.setAttribute("aria-expanded", tog.getAttribute("aria-expanded") === "true" ? "false" : "true"); });
+  if (narrow.addEventListener) narrow.addEventListener("change", syncLead);
+  syncLead();
   /* every other clip plays while the pointer is over it; on touch screens it gets its controls */
   Array.prototype.forEach.call(document.querySelectorAll("video.hv"), function (v) {
     var box = v.closest("figure, .region");
