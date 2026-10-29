@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#120d0a">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Hikâyenin başlangıcı, Cremation: Outrun the Dawn">
+<meta property="og:description" content="Pyrelle, Helion, madenciler, Duskborn ve Güneş Çizgisi: oyun başlamadan önce ne oldu.">
+<meta property="og:image" content="https://cremation-alpha.vercel.app/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<title>Hikâyenin başlangıcı, Cremation: Outrun the Dawn</title>
+<meta name="description" content="Cremation: Outrun the Dawn: Pyrelle gezegeninin, Helion Deepworks'ün, madencilerin, Duskborn'ların ve Güneş Çizgisinin hikâyesi, oyun başlamadan önce.">
+<style>
+:root{--bg:#120d0a;--panel:#1d1511;--line:#3a2a20;--fg:#f1e6d8;--dim:#b4a291;--ember:#ff7a2f;--ember2:#ffb15c}
+*{box-sizing:border-box}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap-s{max-width:900px;margin:0 auto}
+.wrap-l{max-width:1100px;margin:0 auto}
+h1,h2,h3{font-family:ui-serif,Georgia,"Times New Roman",serif;text-wrap:balance;margin:0}
+h1{font-weight:800;font-size:clamp(2.6rem,9vw,5rem);line-height:1;letter-spacing:-.015em}
+h2{font-size:clamp(1.5rem,4vw,2.1rem);margin-bottom:6px}
+h3{font-size:1.3rem;margin-bottom:8px}
+p{margin:0 0 12px}
+.dim{color:var(--dim)}
+.eyebrow{display:block;font:600 .78rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--ember2);margin-bottom:10px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(18,13,10,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:8px max(16px,env(safe-area-inset-left,0px));display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center;font-size:.9rem}
+nav a{color:var(--dim);text-decoration:none}
+nav a:hover,nav a:focus-visible{color:var(--ember2)}
+nav .go{margin-left:auto;background:var(--ember);color:#1a0d05;font-weight:700;border-radius:6px;padding:4px 12px}
+nav .go:hover{color:#1a0d05;background:var(--ember2)}
+header.top{padding-block:56px 20px}
+.lead{font-size:1.2rem;color:#e2d3c0;max-width:56ch;margin:18px 0 10px}
+.story{display:grid;gap:34px;margin-top:26px}
+.beat{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:center}
+.beat:nth-child(even) figure{order:2}
+.beat .yr{font:700 .8rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;color:var(--ember2);text-transform:uppercase;display:block;margin-bottom:8px}
+@media (max-width:720px){.beat{grid-template-columns:1fr}.beat:nth-child(even) figure{order:0}}
+figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}
+figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#000}
+figcaption{padding:10px 14px 12px;font-size:.9rem;color:var(--dim)}
+.rgn{display:grid;gap:10px;margin-top:16px}
+.rgn a{display:block;text-decoration:none;color:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.rgn b{display:block;font-family:ui-serif,Georgia,serif;font-size:1.05rem}
+.rgn small{display:block;font-size:.88rem;line-height:1.45;opacity:.94}
+.rgn a:focus-visible{outline:3px solid var(--ember2);outline-offset:2px}
+.r1{background:linear-gradient(160deg,#10151c,#3b2c24 70%,#8a5230)}.r2{background:linear-gradient(160deg,#3a2c10,#9a6a20 70%,#e0a64a)}
+.r3{background:linear-gradient(160deg,#1c1830,#40355e 70%,#7d6aa6)}.r4{background:linear-gradient(160deg,#05140f,#123a30 70%,#2f8f7a)}.r5{background:linear-gradient(160deg,#2a0f08,#7a2f12 70%,#d0782a)}
+section{padding-block:44px 8px}
+a.btn{display:inline-block;background:var(--ember);color:#1a0d05;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:8px;margin:0 8px 8px 0}
+a.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+a.btn:focus-visible{outline:3px solid var(--ember2);outline-offset:2px}
+footer{margin-block:48px 40px;color:var(--dim);font-size:.9rem;border-top:1px solid var(--line);padding-top:18px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav aria-label="Sayfa bağlantıları">
+  <a href="./">&larr; Ana sayfa</a><a href="./#oyun">Oyun</a><a href="./#bolgeler">Bölgeler</a>
+  <a class="go" href="./#indir">İndir</a>
+</nav>
+
+<main class="wrap-l">
+<header class="top wrap-s">
+  <span class="eyebrow">Hikâyenin başlangıcı</span>
+  <h1>Pyrelle</h1>
+  <p class="lead">Oyun hikâyenin ortasında açılıyor. Bu sayfa baştan anlatıyor: gezegen, şirket, madenciler ve altı kişinin neden koştuğu.</p>
+  <p class="dim">Oynamak için okumak gerekmez. Okursan koşunun, kulelerin ve gecenin nedenini bilirsin.</p>
+</header>
+
+<section>
+  <div class="story">
+    <div class="beat"><div><span class="yr">1. Bölüm</span><h3>Pyrelle</h3>
+      <p>Pyrelle'in yüzeyi kara obsidyenden, külden ve çatlamış plakalardan oluşur. Gök gri-mavidir, ufukta turuncu-beyaz bir parıltı durur. Vadi duvarlarından kara cam gibi parlayan sivri kayalar fırlar. Çatlakların dibinde turuncu bir ışık yanar, buhar yükselir. Kül kar gibi yağar.</p>
+      <p>Bu yer boş değildi. Yüzeye maden platformları, sondaj kuleleri, cevher vagonları, raylar ve röle hatları yayılmıştı. Şirket buraya cevher için geldi.</p></div>
+      <figure><img src="media/story_2.jpg" width="1280" height="720" alt="Madenci kentinin ve kulelerin üstünden görünüş, dumanlı gökyüzü"><figcaption>Maden kenti ve kuleler (oyunun giriş filminden).</figcaption></figure></div>
+
+    <div class="beat"><div><span class="yr">2. Bölüm</span><h3>Helion ve Zincir</h3>
+      <p>Helion Deepworks, Pyrelle'in cevherini dokuz yıl boyunca kazdı. O dokuz yıl maden para getirdi. Şirket doğu koridoru boyunca eski maden ağızlarının üstüne beş kule-sığınak dikti. Adı Zincir. Kulelerde işçiler, madenciler ve şirketin garnizonu yaşadı.</p>
+      <p>Cevheri madenciler kazdı. Kaçakçı Veyra Ash-Broker'ın pazarı da bu hattın üstünde. Ekip her kuleden önce ondan silah alır.</p></div>
+      <figure><img loading="lazy" src="media/exo_3.jpg" width="1280" height="720" alt="Kaskında lamba olan bir madenci ve arkasında kazmalı madenciler"><figcaption>Madenciler.</figcaption></figure></div>
+
+    <div class="beat"><div><span class="yr">Sonra</span><h3>Yer uyanıyor</h3>
+      <p>Kazı derinleştikçe yer karşılık verdi. Önce depremler başladı. Çatlaklardan lav fışkırdı. Gayzerler bir sondaj kulesini ortadan ikiye böldü. Hatlar tekrar tekrar zarar gördü.</p>
+      <p>Lav kendiliğinden çıkmaz: deprem bir çatlak açar, lav o çatlaktan fışkırır. Koşuda bunu ayağında duyarsın. Zemin sarsılır, tepeden kaya yağar, askerler savrulur.</p></div>
+      <figure><img loading="lazy" src="media/story_3.jpg" width="1280" height="720" alt="Sondaj kulesinin yanında fışkıran lav ve gayzer, kaçan madenciler"><figcaption>Bir gayzer sondaj kulesini ikiye böler.</figcaption></figure></div>
+
+    <div class="beat"><div><span class="yr">Gece</span><h3>Alacakaranlıkta uyananlar</h3>
+      <p>Külün altında başka bir şey de yaşıyordu. Vahşi madencilik, depremler ve lav Duskborn'ların yuvalarını yıktı. Duskborn gündüz külün altında, ulaşılması zor çatlaklarda uyur. Alacakaranlıkta çıkar ve madencilere saldırır.</p>
+      <p>Sığınaklar ve maden kuleleri tam onların yuvalarının üstüne kurulmuştu. Kuleleri savunmak zorunda kalan madenciler gece boyunca giderek büyüyen istila dalgalarıyla savaştı. Askerler onlara ne yardım edebilir ne de savunabilirdi. Madenciler şirkete karşı isyan etti.</p></div>
+      <figure><img loading="lazy" src="media/story_4.jpg" width="1280" height="720" alt="Bir kulenin dibinde örümcek benzeri yaratıklar, turuncu gün batımı"><figcaption>Kule ve sürünenler.</figcaption></figure></div>
+
+    <div class="beat"><div><span class="yr">Şafak</span><h3>Cremation Sweep: Güneş Çizgisi</h3>
+      <p>Şirket Duskborn istilasıyla başa çıkamadı. Çareyi Güneş Çizgisinde buldu. Yörüngedeki aynalar, yani Şafak Dizisi, yüzeyi temiz yakacak ve istilacı Duskborn'leri yok edecekti. Ama madenciler evlerini ve yaşadıkları yerleri kaybedecekti. Buna cinayet dediler. Karşı çıktılar, kontrol kulelerini ele geçirip kapıları kilitlediler. Şirket de madencileri ve ailelerini esir aldı.</p>
+      <p>Şafak doğal bir şafak değil. Aynalar yüzeyi batıdan doğuya, saatte 25 km hızla, bir çizgi halinde yakıyor. Çizginin değdiği yerde güçlü patlamalar ve yangınlar çıkar. Önünde gece, arkasında kavrulmuş gün. Gölgede kalan yaşar.</p></div>
+      <figure><img loading="lazy" src="media/story_5.jpg" width="1280" height="720" alt="Gökyüzündeki halkadan yere inen ışın"><figcaption>Yörüngeden yüzeye ışın.</figcaption></figure></div>
+
+    <div class="beat"><div><span class="yr">Terk edilen ekip</span><h3>Altı kişi geride kaldı</h3>
+      <p>Şirket altı kişilik bir ekibi kuleleri geri almaya gönderdi: <b>VANCE, SARAH, HARRY, SPARKS, CHARLIE</b> ve medik <b>DOC</b>. Gemiler, ekip dönmeden biraz önce kalktı.</p>
+      <p>Ekibin önünde tek yer kaldı: Helion Dağı'ndaki Ark. Pencere şafakla birlikte kapanıyor ve Güneş Çizgisi arkalarında. Terk edilmenin öfkesi onları dağa doğru sürüyor.</p></div>
+      <figure><img loading="lazy" src="media/story_8.jpg" width="1280" height="720" alt="Dağa doğru yürüyen altı asker, tepede bir gemi"><figcaption>Helion Dağı ve tepesindeki Ark.</figcaption></figure></div>
+  </div>
+</section>
+
+<section class="wrap-s">
+  <span class="eyebrow">Beş bölge</span><h2>Zincirin beş kulesi, beş başka Pyrelle</h2>
+  <p class="dim">Her kule başka bir bölgede. Bölgelerin oyundan görüntüleri ana sayfada.</p>
+  <div class="rgn">
+    <a class="r1" href="./#bolgeler"><b>1 &middot; Ashfall</b><small>Obsidyen, kül, gri-mavi gök, ufukta turuncu şafak.</small></a>
+    <a class="r2" href="./#bolgeler"><b>2 &middot; Glasswind</b><small>Cam kum, ısı titremesi, sarı-turuncu gök.</small></a>
+    <a class="r3" href="./#bolgeler"><b>3 &middot; Stormspire</b><small>Yüksek sırt, mor-çelik gök, yıldırım.</small></a>
+    <a class="r4" href="./#bolgeler"><b>4 &middot; Sporeroot</b><small>Yeraltı galerisi, mantar ışığı, sis.</small></a>
+    <a class="r5" href="./#bolgeler"><b>5 &middot; Hivegate</b><small>Reçine duvarlar, bakır sıcaklık, buhar.</small></a>
+  </div>
+  <p style="margin-top:26px"><a class="btn" href="./#indir">Alpha'yı indir</a><a class="btn ghost" href="./">Ana sayfaya dön</a></p>
+</section>
+
+<footer class="wrap-s">Cremation: Outrun the Dawn &middot; alpha &middot; yalnızca davetli test içindir, paylaşma. Görseller yapay zekâ ile üretildi.</footer>
+</main>
+</body>
+</html>
