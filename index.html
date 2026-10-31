@@ -108,11 +108,17 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
 .lead-toggle:disabled{color:inherit}.lead-toggle .lead{margin:0;flex:1;min-width:0}.lead-toggle .chev{display:none}
 @media (max-width:700px){.lead-toggle{align-items:center;cursor:pointer}.lead-toggle .lead{font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lead-toggle[aria-expanded="true"] .lead{white-space:normal;overflow:visible;font-size:1.2rem}.lead-toggle .chev{display:inline-block;flex:none;color:var(--ember2);font-size:1.15rem;line-height:1;transition:transform .2s}.lead-toggle[aria-expanded="true"] .chev{transform:rotate(180deg);align-self:flex-start;margin-top:.35em}.lead-toggle:focus-visible{outline:3px solid var(--ember2);outline-offset:3px;border-radius:6px}}
 .more{display:flex;gap:8px 16px;flex-wrap:wrap;align-items:center;margin-top:26px}.more a.btn{margin:0}
+.strip{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));margin-top:20px}
+.strip a{position:relative;display:block;aspect-ratio:16/9;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--pic,#000)}
+.strip img{display:block;width:100%;height:100%;object-fit:contain}
+.strip span{position:absolute;left:6px;bottom:6px;font-size:.7rem;line-height:1.35;padding:1px 8px;border-radius:99px;background:rgba(18,13,10,.85);color:var(--ember2);border:1px solid var(--ember)}
+.strip span.f{color:var(--ok);border-color:#4f8f56}
+.strip a:focus-visible{outline:3px solid var(--ember2);outline-offset:2px}
 </style>
 </head>
 <body>
 <nav aria-label="Sayfa bölümleri">
-  <a href="#hikaye">Hikâye</a><a href="hikaye.html">Hikâyenin başlangıcı</a><a href="#oyun">Oyun</a><a href="#kule">Kule</a><a href="#pazar">Pazar</a><a href="#bolgeler">Bölgeler</a><a href="#emek">Emek</a><a href="#gorunum">Görünüm</a><a href="#filmler">Filmler</a><a href="#yapilanlar">Yapılanlar</a><a href="#sirada">Sırada</a><a href="#kurulum">Kurulum</a>
+  <a href="#hikaye">Hikâye</a><a href="hikaye.html">Hikâyenin başlangıcı</a><a href="#oyun">Oyun</a><a href="#kule">Kule</a><a href="#pazar">Pazar</a><a href="#bolgeler">Bölgeler</a><a href="#emek">Emek</a><a href="#gorunum">Görünüm</a><a href="#filmler">Filmler</a><a href="galeri.html">Galeri</a><a href="#yapilanlar">Yapılanlar</a><a href="#sirada">Sırada</a><a href="#kurulum">Kurulum</a>
   <a class="go" href="#indir">İndir</a>
 </nav>
 
@@ -275,6 +281,20 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
     <figure class="vid"><video class="hv" src="media/film_capture_a.mp4" loop muted playsinline preload="metadata" poster="media/cap_1.jpg"></video><figcaption><b>Kuşatma.</b> Şafak çizgisi sığınağın üstünden geçerken.</figcaption></figure>
     <figure class="vid"><video class="hv" src="media/film_capture_b.mp4" loop muted playsinline preload="metadata" poster="media/cap_5.jpg"></video><figcaption><b>Esirler.</b> Sığınağın altındaki çukurda madenciler.</figcaption></figure>
   </div>
+</section>
+
+<section id="galeri">
+  <div class="wrap-s"><span class="eyebrow">Galeri</span><h2>Şimdiye kadar çizilenler</h2>
+  <p class="dim">Yaratıklar, patronlar, bölgeler, askerler ve filmlerin kareleri, kategorilere ayrılmış. Konsept çizimler oyundan alınmış görüntü değil; çoğunun modeli henüz oyunda yok. Her resmin üstünde konsept mi film karesi mi olduğu yazıyor.</p></div>
+  <div class="strip">
+    <a href="galeri.html#helion" style="--pic:#090d13"><img loading="lazy" decoding="async" src="galeri/helion_kul_kralicesi_t.jpg" width="480" height="270" alt="Küllerin yağdığı gecede, ışıklı bir rampa ve kara kalenin önünde duran dev bir yaratık: petek gözenekli, içi kor gibi parlayan turuncu bir karnı, üstünde yeşil parlayan bezleri ve başında beyaz sivri bir tacı var"><span class="k">Konsept</span></a>
+    <a href="galeri.html#patronlar" style="--pic:#aeaeae"><img loading="lazy" decoding="async" src="galeri/patronlar_stormroc_t.jpg" width="480" height="206" alt="Mor damarlı koyu kanatları ve beyaz, sivri tepesiyle fırtınanın dev uçan sürüngeni: kanatları açık önden, yere yakın yandan ve yukarıdan"><span class="k">Konsept</span></a>
+    <a href="galeri.html#patronlar" style="--pic:#cbcaca"><img loading="lazy" decoding="async" src="galeri/patronlar_gharial_kuldan_cikarken_t.jpg" width="480" height="206" alt="Solda çenesini açmış, ön tarafı havaya kalkmış, sırtında asit yeşili parlayan kümeler taşıyan timsah başlı kara dev; sağda külün içinden burnu önde kendini çıkarırken, çevresinde çatlayan parlak yarıklar"><span class="k">Konsept</span></a>
+    <a href="galeri.html#bolgeler" style="--pic:#cdcccb"><img loading="lazy" decoding="async" src="galeri/bolgeler_kule2_glasswind_t.jpg" width="480" height="206" alt="Kehribar cam pullu, kenarları parlayan kara yaratıklar: sürünen, asit keseli tükürücü ve uçan; altlarında kum rengi zemin"><span class="k">Konsept</span></a>
+    <a href="galeri.html#tarihce" style="--pic:#302925"><img loading="lazy" decoding="async" src="galeri/tarihce_intro_3_t.jpg" width="480" height="270" alt="Kulenin dibinde patlayan zemin, uçuşan küpler ve alev"><span class="f">Film karesi</span></a>
+    <a href="galeri.html#kalkis" style="--pic:#4d4542"><img loading="lazy" decoding="async" src="galeri/kalkis_exo_4_t.jpg" width="480" height="270" alt="Mavi kasklı, kırmızı atkılı komutanın yakın planı; arkasında yürüyen askerler"><span class="f">Film karesi</span></a>
+  </div>
+  <div class="more"><a class="btn" href="galeri.html">Galeriyi aç &rarr;</a><span class="dim">Bir resme tıklarsan galerinin o kategorisi açılır.</span></div>
 </section>
 
 <section id="yapilanlar">

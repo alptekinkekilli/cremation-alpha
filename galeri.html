@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#120d0a">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Galeri, Cremation: Outrun the Dawn">
+<meta property="og:description" content="Şimdiye kadar çizilen konseptler ve film kareleri: yaratıklar, patronlar, bölgeler, askerler. Her resmin üstünde ne olduğu yazıyor.">
+<meta property="og:image" content="https://cremation-alpha.vercel.app/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<title>Galeri, Cremation: Outrun the Dawn</title>
+<meta name="description" content="Cremation: Outrun the Dawn: şimdiye kadar çizilen konsept resimler ve oyunun filmlerinden kareler, kategorilere ayrılmış. Her resmin konsept mi film karesi mi olduğu yazıyor.">
+<style>
+:root{--bg:#120d0a;--panel:#1d1511;--line:#3a2a20;--fg:#f1e6d8;--dim:#b4a291;--ember:#ff7a2f;--ember2:#ffb15c;--ok:#8fd694}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body.lb-open{overflow:hidden}
+.wrap-s{max-width:900px;margin:0 auto}
+.wrap-l{max-width:1100px;margin:0 auto}
+h1,h2,h3{font-family:ui-serif,Georgia,"Times New Roman",serif;text-wrap:balance;margin:0}
+h1{font-weight:800;font-size:clamp(2.2rem,8vw,4.2rem);line-height:1.02;letter-spacing:-.015em}
+h2{font-size:clamp(1.4rem,4vw,1.9rem)}
+p{margin:0 0 12px}
+.dim{color:var(--dim)}
+.eyebrow{display:block;font:600 .78rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--ember2);margin-bottom:10px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(18,13,10,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:8px max(16px,env(safe-area-inset-left,0px));display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center;font-size:.9rem}
+nav a{color:var(--dim);text-decoration:none}
+nav a:hover,nav a:focus-visible,nav a[aria-current]{color:var(--ember2)}
+nav .go{margin-left:auto;background:var(--ember);color:#1a0d05;font-weight:700;border-radius:6px;padding:4px 12px}
+nav .go:hover{color:#1a0d05;background:var(--ember2)}
+header.top{padding-block:48px 8px}
+.lead{font-size:1.15rem;color:#e2d3c0;max-width:60ch;margin:16px 0 10px}
+.note{border-left:3px solid var(--ember);padding:4px 14px;color:var(--dim);margin:18px 0 0;font-size:.92rem}
+.note p:last-child{margin-bottom:0}
+.note b{color:var(--fg)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 8px}
+.filters button{font:inherit;font-size:.88rem;line-height:1.2;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:8px 14px;cursor:pointer}
+.filters button:hover{border-color:var(--ember2)}
+.filters button[aria-pressed="true"]{background:var(--ember);border-color:var(--ember);color:#1a0d05;font-weight:700}
+.filters button:focus-visible{outline:3px solid var(--ember2);outline-offset:2px}
+.filters .n{opacity:.75;font-size:.8em}
+.count{color:var(--dim);font-size:.88rem;margin:0}
+.cat{padding-top:34px}
+.cat .intro{color:#e2d3c0;max-width:68ch;margin:6px 0 4px}
+.cat .cnote{font-size:.88rem;max-width:68ch;margin:0}
+.cat h2 .n{color:var(--dim);font-size:.7em;font-family:ui-sans-serif,system-ui,sans-serif;font-weight:400}
+.gal{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+.it{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0;margin:0}
+.th{display:block;aspect-ratio:16/9;background:var(--pic,#000);position:relative;cursor:zoom-in}
+.th img{display:block;width:100%;height:100%;object-fit:contain}
+.th:focus-visible{outline:3px solid var(--ember2);outline-offset:-3px}
+.cap{padding:10px 14px 12px}
+.cap h3{font-size:1.02rem;line-height:1.3;margin:0 0 2px}
+.cap .en{font-size:.8rem;line-height:1.45;color:var(--dim);margin:0 0 8px}
+.tag{display:inline-block;margin:0;font-size:.74rem;line-height:1.4;padding:2px 9px;border-radius:99px;border:1px solid}
+.tag b{font-weight:700}
+.tag.k{color:var(--ember2);border-color:var(--ember)}
+.tag.f{color:var(--ok);border-color:#4f8f56}
+@media (max-width:599px){.gal{grid-template-columns:1fr}}
+footer{margin-block:56px 40px;color:var(--dim);font-size:.9rem;border-top:1px solid var(--line);padding-top:18px}
+footer a{color:var(--ember2)}
+/* the lightbox */
+.lb{position:fixed;inset:0;z-index:20;background:#0a0705;display:flex;flex-direction:column;align-items:center;padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.lb-stage{position:relative;flex:1 1 auto;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;margin-top:44px;touch-action:pan-y}
+.lb-stage img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;background:var(--pic,#000);border-radius:6px;transition:filter .2s,opacity .2s}
+.lb-stage img.loading{filter:blur(5px);opacity:.75}
+.lb button{font:inherit;color:var(--fg);background:rgba(29,21,17,.88);border:1px solid var(--line);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.lb button:hover{border-color:var(--ember2)}
+.lb button:focus-visible{outline:3px solid var(--ember2);outline-offset:2px}
+.lb-x{position:absolute;top:max(8px,env(safe-area-inset-top,0px));right:max(8px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:99px;font-size:1.6rem;line-height:1}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:56px;border-radius:10px;font-size:2rem;line-height:1}
+.lb-p{left:4px}.lb-n{right:4px}
+.lb-cap{flex:0 0 auto;width:min(100%,900px);max-height:34vh;overflow:auto;padding-top:10px;font-size:.9rem}
+.lb-cap p{margin:0 0 4px}
+.lb-t{font:700 1.15rem/1.3 ui-serif,Georgia,serif}
+.lb-cap .en{color:var(--dim);font-size:.85rem}
+.lb-tag{font-size:.85rem}
+.lb-tag.k{color:var(--ember2)}.lb-tag.f{color:var(--ok)}
+.lb-note{color:var(--dim);font-size:.85rem}
+.lb-pos{color:var(--dim);font-size:.85rem}
+.lb-pos a{color:var(--ember2)}
+.lb-pos a:focus-visible{outline:3px solid var(--ember2);outline-offset:2px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lb-stage img{transition:none}}
+</style>
+</head>
+<body>
+<nav aria-label="Sayfa bağlantıları">
+  <a href="./">&larr; Ana sayfa</a><a href="hikaye.html">Hikâyenin başlangıcı</a><a href="./#oyun">Oyun</a><a href="galeri.html" aria-current="page">Galeri</a>
+  <a class="go" href="./#indir">İndir</a>
+</nav>
+
+<main class="wrap-l" id="main">
+<header class="top wrap-s">
+  <span class="eyebrow">Galeri</span>
+  <h1>Şimdiye kadar çizilenler</h1>
+  <p class="lead">Bugüne kadar çizdiğimiz resimler burada, kategorilere ayrılmış: yaratıklar, patronlar, bölgeler, askerler ve filmlerin kareleri. Merak edenler için; oynamak için bakmak gerekmez.</p>
+  <p class="dim">Her resmin altında ne olduğu yazıyor. <b>Konsept çizim</b>, yazdığımız bir tariften yapay zekâ ile çizildi; oyundan alınmış görüntü değil. <b>Film karesi</b>, oyunun kendi oynattığı bir filmden bir kare; filmlerin resimleri de yapay zekâ ile çizildi. Büyütmek için resme tıkla.</p>
+  <div class="note">
+    <p><b>Alpha.4'te ne var, ne yok.</b> İndirdiğin alpha.4'te sürünenler, uçan tükürücüler ve beşinci dalgada bir boss var, eski modelleriyle. Yeni kara derili aile, uçanların yeni modeli, Gharial'ın küllerden çıkışı ve yaratıkların ölümü (vurulan düşer, patlamayla yanan kömürleşip küle döner) geliştirme sürümünde var, henüz alpha'da yok; sonraki bir alpha'yla gelecek. Gharial'ı daha uzun bacaklı yeniden yapıyoruz, çizimdeki hâli değişebilir. Bölgeye göre renkler, diğer dört boss, tırmanışın yaratıkları ve Kül Kraliçesi henüz yapılmadı.</p>
+    <p>Çizimlerdeki sayılar (bacak, göz, kese) tasarımla tutmayabilir; bu yüzden altyazılarda sayı vermedik.</p>
+  </div>
+  <div class="filters" role="group" aria-label="Kategoriye göre süz" hidden>
+    <button type="button" data-cat="hepsi" aria-pressed="true">Hepsi <span class="n">62</span></button>
+    <button type="button" data-cat="dunya" aria-pressed="false">Dünya ve Sunline <span class="n">3</span></button>
+    <button type="button" data-cat="askerler" aria-pressed="false">Askerler ve madenciler <span class="n">5</span></button>
+    <button type="button" data-cat="yaratiklar" aria-pressed="false">Duskborn yaratıkları <span class="n">11</span></button>
+    <button type="button" data-cat="patronlar" aria-pressed="false">Patronlar <span class="n">6</span></button>
+    <button type="button" data-cat="bolgeler" aria-pressed="false">Bölgeye göre görünüm <span class="n">5</span></button>
+    <button type="button" data-cat="helion" aria-pressed="false">Helion tırmanışı ve kraliçe <span class="n">5</span></button>
+    <button type="button" data-cat="tarihce" aria-pressed="false">Tarihçe <span class="n">13</span></button>
+    <button type="button" data-cat="kalkis" aria-pressed="false">Kalkış, kuşatma ve göç <span class="n">14</span></button>
+  </div>
+  <p class="count" id="count" aria-live="polite"></p>
+</header>
+
+<section class="cat" id="dunya" data-cat="dunya">
+  <h2>Dünya ve Sunline <span class="n">(3)</span></h2>
+  <p class="intro">Ufku baştan başa saran ateş ve gökte ona ışın indiren ayna halkası.</p>
+  <p class="cnote">Güneş Çizgisinin ateş duvarı için çizilmiş üç referans. Gerçekçi bir çizim tarzı: oyunun blok görünümü bu değil.</p>
+  <ul class="gal">
+      <li class="it" data-kind="k"><a class="th" href="galeri/dunya_halka_ve_isin.jpg" style="--pic:#1c120e" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Güneş Çizgisinin ateş duvarı için çizilmiş referans; oyundan alınmış görüntü değil."><img src="galeri/dunya_halka_ve_isin_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Çatlak bir ovanın üstünde ufku baştan başa kaplayan ateş perdesi; gökte koyu bir ayna halkası ve ondan ateşe inen ince, beyaz bir ışın; altta küçük asker siluetleri"></a><div class="cap"><h3>Halka ve ışın</h3><p class="en" lang="en">The mirror ring and its beam over the line of fire</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/dunya_geriye_bakis.jpg" style="--pic:#161619" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Güneş Çizgisinin ateş duvarı için çizilmiş referans; oyundan alınmış görüntü değil."><img src="galeri/dunya_geriye_bakis_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Kara cam kırıklarıyla kaplı düz bir ovada, ufku kaplayan ateş duvarına dönüp bakan asker siluetleri; gökte ince bir ayna halkası ve ateşe inen mavi-beyaz bir ışın"></a><div class="cap"><h3>Geriye bakış</h3><p class="en" lang="en">Looking back at the wall of fire</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/dunya_duman_sutunlari.jpg" style="--pic:#171b1c" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Güneş Çizgisinin ateş duvarı için çizilmiş referans; oyundan alınmış görüntü değil."><img src="galeri/dunya_duman_sutunlari_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Parlayan cam kırıklarının ardında ufku saran ateş duvarı; üstünde yükselen kara ve turuncu duman sütunları, dumanlı gökte soluk bir halka; önde arkası dönük askerler"></a><div class="cap"><h3>Duman sütunları</h3><p class="en" lang="en">Smoke columns above the wall of fire</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+  </ul>
+</section>
+
+<section class="cat" id="askerler" data-cat="askerler">
+  <h2>Askerler ve madenciler <span class="n">(5)</span></h2>
+  <p class="intro">Ekip ve madenciler: kim nasıl giyiniyor, nasıl görünüyor.</p>
+  <p class="cnote">Lego ve Minecraft çizimleri iki görünüm arasında seçim yapmak için çizilmişti; oyunda ikisi de var (koşuda F10). Çizimler oyundaki modellerin birebir hâli değil.</p>
+  <ul class="gal">
+      <li class="it" data-kind="k"><a class="th" href="media/con_soldier.jpg" style="--pic:#fefefe" data-w="900" data-h="900" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki modelin birebir hâli değil."><img src="galeri/askerler_asker_lego_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Lego tarzı asker konsepti: önden, yandan ve arkadan üç görünüş"></a><div class="cap"><h3>Lego görünümünde asker</h3><p class="en" lang="en">Soldier concept, Lego look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/askerler_asker_minecraft.jpg" style="--pic:#dedede" data-w="1024" data-h="1024" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki modelin birebir hâli değil."><img src="galeri/askerler_asker_minecraft_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Minecraft tarzı asker konsepti: kamuflajlı, küp gövdeli bir asker; önden, yandan ve arkadan"></a><div class="cap"><h3>Minecraft görünümünde asker</h3><p class="en" lang="en">Soldier concept, Minecraft look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/askerler_vance.jpg" style="--pic:#8a8887" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Karakter referans sayfası."><img src="galeri/askerler_vance_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Mavi kasklı, kırmızı atkılı, sırtında çantası ve elinde tüfeği olan komutan: yakın plan, önden ve arkadan görünüş"></a><div class="cap"><h3>Komutan Vance</h3><p class="en" lang="en">Captain Vance, character sheet</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/askerler_madenci.jpg" style="--pic:#7d7570" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Karakter referans sayfası."><img src="galeri/askerler_madenci_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Sarı kasklı, lambalı, turuncu tulumlu madenci: yakın plan, önden ve arkadan görünüş"></a><div class="cap"><h3>Madenci</h3><p class="en" lang="en">Miner, character sheet</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/askerler_madenci_kirmizi_atki.jpg" style="--pic:#d4d3d1" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Karakter referans sayfası."><img src="galeri/askerler_madenci_kirmizi_atki_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Çatlak, beyaz kasklı, yüzünün alt yarısı kırmızı atkıyla örtülü, turuncu tulumlu madenci: önden, yandan ve arkadan"></a><div class="cap"><h3>Kırmızı atkılı madenci</h3><p class="en" lang="en">Miner with a white hard hat and a red scarf</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+  </ul>
+</section>
+
+<section class="cat" id="yaratiklar" data-cat="yaratiklar">
+  <h2>Duskborn yaratıkları <span class="n">(11)</span></h2>
+  <p class="intro">Gün boyu külün altında uyuyanlar. Alacakaranlıkta çatlaklardan çıkarlar.</p>
+  <p class="cnote">Lego ve Minecraft görünümlü çizimler erken konseptlerdir. Diğerleri sonradan çizildi; sürünen ve uçanın yeni modelleri geliştirme sürümünde var, alpha.4&#x27;te yok.</p>
+  <ul class="gal">
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_once_ve_sonra.jpg" style="--pic:#bab9b8" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Soldaki, hikâyedeki zararsız canlı; sağdaki, aynı canlının sürünen hâli. Yeni sürünen modeli geliştirme sürümünde var, alpha.4&#x27;te yok."><img src="galeri/yaratiklar_once_ve_sonra_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Solda gri taş plakalı kubbe kabuğuyla küçük, zararsız görünen bir canlı; sağda aynı canlının büyümüş hâli: kabuğu ayrı plakalara bölünmüş, plakaların arasından turuncu ışık sızıyor"></a><div class="cap"><h3>Aynı canlı, önce ve sonra</h3><p class="en" lang="en">The same animal before and after: harmless, then Duskborn</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_surunen_onden.jpg" style="--pic:#e2e0df" data-w="1152" data-h="864" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yeni modeli geliştirme sürümünde var, alpha.4&#x27;te yok."><img src="galeri/yaratiklar_surunen_onden_t.jpg" width="480" height="360" loading="lazy" decoding="async" alt="Kara küplerden yapılmış, iki parlak kehribar gözlü, uzun ince ayaklı, örümceğe benzeyen bir yaratık, önden"></a><div class="cap"><h3>Sürünen, önden</h3><p class="en" lang="en">The crawler, front view</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_surunen_uc_gorunus.jpg" style="--pic:#c8c6c7" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yeni modeli geliştirme sürümünde var, alpha.4&#x27;te yok."><img src="galeri/yaratiklar_surunen_uc_gorunus_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Aynı sürünenin önden, yandan ve yukarıdan görünüşü: kara küp gövde, turuncu çatlaklar, kehribar gözler"></a><div class="cap"><h3>Sürünen, üç görünüş</h3><p class="en" lang="en">The crawler: front, side and top</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_ucan_uc_gorunus.jpg" style="--pic:#e9e8e8" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yeni modeli geliştirme sürümünde var, alpha.4&#x27;te yok."><img src="galeri/yaratiklar_ucan_uc_gorunus_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Kara küplerden yapılmış, kanatlarında turuncu damarlar olan, yarasa ile ejderha arası bir yaratık: önden, yandan ve yukarıdan"></a><div class="cap"><h3>Uçan, üç görünüş</h3><p class="en" lang="en">The flyer: front, side and top</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_ucan_havada_ve_dalista.jpg" style="--pic:#bfbebe" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yeni modeli geliştirme sürümünde var, alpha.4&#x27;te yok."><img src="galeri/yaratiklar_ucan_havada_ve_dalista_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Solda kanatları açık, çenesinin altında asit yeşili parlayan keseyle havada duran kara yaratık; sağda kanatlarını gövdesine yatırmış, dalışa geçmiş hâli"></a><div class="cap"><h3>Uçan, havada ve dalışta</h3><p class="en" lang="en">The flyer hovering, and in a dive</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/con_crawler.jpg" style="--pic:#d3d6d9" data-w="900" data-h="900" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki modelin birebir hâli değil."><img src="galeri/yaratiklar_surunen_lego_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Lego tarzı sürünen yaratık konsepti"></a><div class="cap"><h3>Lego görünümünde sürünen</h3><p class="en" lang="en">Early crawler concept, Lego look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_surunen_minecraft.jpg" style="--pic:#fcfcfc" data-w="1024" data-h="1024" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki modelin birebir hâli değil."><img src="galeri/yaratiklar_surunen_minecraft_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Minecraft tarzı konsept: kara küplerden yapılmış, gözleri turuncu parlayan, ayakları üstünde duran iri bir hayvan"></a><div class="cap"><h3>Minecraft görünümünde sürünen</h3><p class="en" lang="en">Early crawler concept, Minecraft look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/con_flyer.jpg" style="--pic:#dde1e5" data-w="900" data-h="900" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki modelin birebir hâli değil."><img src="galeri/yaratiklar_ucan_lego_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Lego tarzı kanatlı yaratık konsepti"></a><div class="cap"><h3>Lego görünümünde kanatlı</h3><p class="en" lang="en">Early flyer concept, Lego look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_ucan_minecraft.jpg" style="--pic:#e0e4e7" data-w="1024" data-h="1024" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki modelin birebir hâli değil."><img src="galeri/yaratiklar_ucan_minecraft_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Minecraft tarzı konsept: kara küplerden yapılmış, kanatları turuncu ışıklı, kuyruğu parlayan bir ejderha"></a><div class="cap"><h3>Minecraft görünümünde kanatlı</h3><p class="en" lang="en">Early flyer concept, Minecraft look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/con_brute.jpg" style="--pic:#e4e6e9" data-w="900" data-h="900" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki modelin birebir hâli değil."><img src="galeri/yaratiklar_iri_lego_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Lego tarzı iri yaratık konsepti"></a><div class="cap"><h3>Lego görünümünde iri yaratık</h3><p class="en" lang="en">Early brute concept, Lego look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/yaratiklar_iri_minecraft.jpg" style="--pic:#dadbdd" data-w="1024" data-h="1024" data-tag="Konsept çizim: yapay zekâ ile çizildi. Oyundan alınmış görüntü değil." data-note="İlk konsept çizim; oyundaki iri yaratık bu dev değil."><img src="galeri/yaratiklar_iri_minecraft_t.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Minecraft tarzı konsept: yüzü parlayan turuncu bir küp olan, geniş omuzlu, kara küplerden bir dev"></a><div class="cap"><h3>Minecraft görünümünde iri yaratık</h3><p class="en" lang="en">Early brute concept, Minecraft look</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+  </ul>
+</section>
+
+<section class="cat" id="patronlar" data-cat="patronlar">
+  <h2>Patronlar <span class="n">(6)</span></h2>
+  <p class="intro">Her kulenin beşinci dalgasında bir dev gelir.</p>
+  <p class="cnote">Gharial geliştirme sürümünde var, alpha.4&#x27;te boss&#x27;un eski modeli var. Diğer dört boss henüz yapılmadı.</p>
+  <ul class="gal">
+      <li class="it" data-kind="k"><a class="th" href="galeri/patronlar_gharial_uc_gorunus.jpg" style="--pic:#afafaf" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Geliştirme sürümünde var, alpha.4&#x27;te yok (alpha.4&#x27;te boss&#x27;un eski modeli var). Daha uzun bacaklı yeniden yapıyoruz; oyundaki hâli çizimden farklı olabilir."><img src="galeri/patronlar_gharial_uc_gorunus_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Timsah başlı, uzun ince bacaklı kara küp dev; önden, yandan ve yukarıdan. Sırtındaki kabukta asit yeşili parlayan kümeler var"></a><div class="cap"><h3>Gharial, birinci kule</h3><p class="en" lang="en">The Gharial, tower 1, Ashfall. Concept: being rebuilt taller.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/patronlar_gharial_kuldan_cikarken.jpg" style="--pic:#cbcaca" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Geliştirme sürümünde var, alpha.4&#x27;te yok. Daha uzun bacaklı yeniden yapıyoruz; oyundaki hâli çizimden farklı olabilir."><img src="galeri/patronlar_gharial_kuldan_cikarken_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Solda çenesini açmış, ön tarafı havaya kalkmış, sırtında asit yeşili parlayan kümeler taşıyan timsah başlı kara dev; sağda külün içinden burnu önde kendini çıkarırken, çevresinde çatlayan parlak yarıklar"></a><div class="cap"><h3>Gharial, külden çıkıyor</h3><p class="en" lang="en">The Gharial rearing up, and digging itself out of the ash. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/patronlar_shardback.jpg" style="--pic:#d0cecd" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/patronlar_shardback_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Sırtında kehribar cam pullar taşıyan kara zırhlı bir kertenkele: önden, yandan kulübe benzeyen kuyruğuyla ve kuyruğunu ısırıp halka olmuş hâliyle"></a><div class="cap"><h3>Shardback, ikinci kule</h3><p class="en" lang="en">Shardback, tower 2, Glasswind. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/patronlar_stormroc.jpg" style="--pic:#aeaeae" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/patronlar_stormroc_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Mor damarlı koyu kanatları ve beyaz, sivri tepesiyle fırtınanın dev uçan sürüngeni: kanatları açık önden, yere yakın yandan ve yukarıdan"></a><div class="cap"><h3>Stormroc, üçüncü kule</h3><p class="en" lang="en">Stormroc, tower 3, Stormspire. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/patronlar_gloomcaller.jpg" style="--pic:#b6b5b4" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/patronlar_gloomcaller_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Sırtında yeşil bezler olan, başının üstünden fener gibi bir ışık sarkan dev, yosun renkli bir kurbağa: önden, yandan ve boğaz kesesi şişmiş hâliyle"></a><div class="cap"><h3>Gloomcaller, dördüncü kule</h3><p class="en" lang="en">Gloomcaller, tower 4, Sporeroot. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/patronlar_brood_champion.jpg" style="--pic:#c2c1c1" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/patronlar_brood_champion_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Başında amber reçine renkli geniş bir yakalık, sırtında parlayan kümeler taşıyan kara zırhlı kovan böceği: önden, yandan ve yukarıdan"></a><div class="cap"><h3>Brood Champion, beşinci kule</h3><p class="en" lang="en">The Brood Champion, tower 5, Hivegate. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+  </ul>
+</section>
+
+<section class="cat" id="bolgeler" data-cat="bolgeler">
+  <h2>Bölgeye göre görünüm <span class="n">(5)</span></h2>
+  <p class="intro">Çizimde Duskborn&#x27;lar her bölgede başka görünür. Ashfall&#x27;da derileri kara camdır, sırtlarında kül plakaları taşırlar. Glasswind&#x27;de rüzgârın taşıdığı kum derilerini aşındırır; sırtlarındaki cam pullar günün sıcağını gece boyunca tutar. Sporeroot&#x27;ta mantar sarmıştır, sisten soluk çıkarlar. Gözleri her yerde aynı kare kehribardır. Asit keselerinin yeşili de değişmez: tükürmeden önce o yeşil şişer ve yanar.</p>
+  <p class="cnote">Konsept. Bölgeye göre renkler henüz yapılmadı.</p>
+  <ul class="gal">
+      <li class="it" data-kind="k"><a class="th" href="galeri/bolgeler_kule1_ashfall.jpg" style="--pic:#c4c3c3" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/bolgeler_kule1_ashfall_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Gri kül karosunun üstünde yaratıklar: kara küplerden bir sürünen, sırtında asit yeşili şişmiş kese taşıyan bir tükürücü ve turuncu damarlı kanatlı bir uçan"></a><div class="cap"><h3>Kule 1, Ashfall</h3><p class="en" lang="en">The Duskborn of Ashfall: the same family in that region&#x27;s colours. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/bolgeler_kule2_glasswind.jpg" style="--pic:#cdcccb" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/bolgeler_kule2_glasswind_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Kehribar cam pullu, kenarları parlayan kara yaratıklar: sürünen, asit keseli tükürücü ve uçan; altlarında kum rengi zemin"></a><div class="cap"><h3>Kule 2, Glasswind</h3><p class="en" lang="en">The Duskborn of Glasswind: the same family in that region&#x27;s colours. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/bolgeler_kule3_stormspire.jpg" style="--pic:#b8b8b8" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/bolgeler_kule3_stormspire_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Mor-mavi damarlı, sırtlarında kırağı olan yaratıklar: sürünen, tükürücü ve uçan; altlarında mor-gri taş zemin"></a><div class="cap"><h3>Kule 3, Stormspire</h3><p class="en" lang="en">The Duskborn of Stormspire: the same family in that region&#x27;s colours. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/bolgeler_kule4_sporeroot.jpg" style="--pic:#b6b6b5" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Soluk renk bir öneri; henüz karar verilmedi. Henüz yapılmadı."><img src="galeri/bolgeler_kule4_sporeroot_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Soluk, mantar keçesine benzeyen derili yaratıklar: sürünen, tükürücü ve uçan; kara zeminin üstünde, firuze damarlarla"></a><div class="cap"><h3>Kule 4, Sporeroot</h3><p class="en" lang="en">The Duskborn of Sporeroot: the same family in that region&#x27;s colours. Concept; the pale skin is still a proposal.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/bolgeler_kule5_hivegate.jpg" style="--pic:#bcbab9" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/bolgeler_kule5_hivegate_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Reçine kaplı, bakır damarlı kara yaratıklar: sürünen, tükürücü ve uçan; altlarında amber reçine lekeli zemin"></a><div class="cap"><h3>Kule 5, Hivegate</h3><p class="en" lang="en">The Duskborn of Hivegate: the same family in that region&#x27;s colours. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+  </ul>
+</section>
+
+<section class="cat" id="helion" data-cat="helion">
+  <h2>Helion tırmanışı ve kraliçe <span class="n">(5)</span></h2>
+  <p class="intro">Beşinci kulenin ardında Helion duvarı yükselir. Mağaralarında ağızlar bekler, tavanlarında Stormroc&#x27;un yavruları. En tepede, Ark&#x27;ın rampasının önünde, Kül Kraliçesi yatıyor.</p>
+  <p class="cnote">Konsept. Henüz yapılmadı: alpha Helion duvarının kapısında bitiyor.</p>
+  <ul class="gal">
+      <li class="it" data-kind="k"><a class="th" href="galeri/helion_cavemaw.jpg" style="--pic:#0d0f14" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/helion_cavemaw_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Kara küp kayalıkta bir mağara ağzında, çenesini kayanın kenarına dayamış, ağzı açık dev bir canlı; çenesinin altında yeşil-sarı bir bez; mağaranın derininde turuncu ışık"></a><div class="cap"><h3>Cavemaw</h3><p class="en" lang="en">The Cavemaw, the Helion wall. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/helion_craglings.jpg" style="--pic:#090816" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/helion_craglings_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Mağara tavanına tünemiş, gözleri turuncu parlayan çok sayıda kara yavru uçan; ağızdan görünen mor şimşekli gökte büyük kuşlar uçuyor"></a><div class="cap"><h3>Craglings</h3><p class="en" lang="en">The Craglings, the Helion wall. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/helion_kul_kralicesi.jpg" style="--pic:#090d13" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/helion_kul_kralicesi_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Küllerin yağdığı gecede, ışıklı bir rampa ve kara kalenin önünde duran dev bir yaratık: petek gözenekli, içi kor gibi parlayan turuncu bir karnı, üstünde yeşil parlayan bezleri ve başında beyaz sivri bir tacı var"></a><div class="cap"><h3>Kül Kraliçesi</h3><p class="en" lang="en">The Cinder Queen, in front of the Ark. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/helion_ashlancer.jpg" style="--pic:#c6c6c6" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/helion_ashlancer_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Kül grisi plakalı, turuncu damarlı bir nöbetçi; mızrak gibi uzun ön kollarıyla, yandan ve önden"></a><div class="cap"><h3>Ashlancer</h3><p class="en" lang="en">An Ashlancer, one of the Queen&#x27;s guards. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="galeri/helion_broodtender.jpg" style="--pic:#d6d4d3" data-w="1280" data-h="549" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Henüz yapılmadı."><img src="galeri/helion_broodtender_t.jpg" width="480" height="206" loading="lazy" decoding="async" alt="Solgun, beyaz küplerden yapılmış, kör görünümlü bir bakıcı canlı; çenelerinin arasında turuncu parlayan bir yumurta taşıyor: yandan ve önden"></a><div class="cap"><h3>Broodtender</h3><p class="en" lang="en">A Broodtender, who carries the Queen&#x27;s eggs. Concept.</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+  </ul>
+</section>
+
+<section class="cat" id="tarihce" data-cat="tarihce">
+  <h2>Tarihçe <span class="n">(13)</span></h2>
+  <p class="intro">Pyrelle&#x27;in öyküsü: giriş filmi ve hikâyenin başlangıcı.</p>
+  <p class="cnote">İlk sekiz resim oyunun giriş filminin kareleri. Sonraki beş resim yalnızca &#x27;Hikâyenin başlangıcı&#x27; sayfası için çizildi; oyunda oynayan bir film değil.</p>
+  <ul class="gal">
+      <li class="it" data-kind="f"><a class="th" href="media/story_1.jpg" style="--pic:#211b18" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_1_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Lav çatlakları olan yanık, karanlık düzlük"></a><div class="cap"><h3>Çatlayan, kül kaplı zemin</h3><p class="en" lang="en">The cracked, ash-covered ground</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/story_2.jpg" style="--pic:#6a5b4c" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_2_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Madenci kentinin ve kulelerin üstünden görünüş, dumanlı gökyüzü"></a><div class="cap"><h3>Maden kenti ve kuleler</h3><p class="en" lang="en">The mining town and its towers</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/story_3.jpg" style="--pic:#302925" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_3_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Kulenin dibinde patlayan zemin, uçuşan küpler ve alev"></a><div class="cap"><h3>Patlayan zemin</h3><p class="en" lang="en">The ground bursts</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/story_4.jpg" style="--pic:#292122" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_4_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Bir kulenin dibinde örümcek benzeri yaratıklar, turuncu gün batımı"></a><div class="cap"><h3>Kule ve sürünenler</h3><p class="en" lang="en">The tower and the crawlers</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/story_5.jpg" style="--pic:#110f0d" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_5_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Gökyüzündeki halkadan yere inen ışın"></a><div class="cap"><h3>Yörüngeden yüzeye ışın</h3><p class="en" lang="en">A beam from orbit to the surface</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="galeri/tarihce_intro_6.jpg" style="--pic:#38271d" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_6_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Kum torbaları ve kırmızı bir bayrakla çevrili parmaklıklı kule kapısında, silahlı, turuncu tulumlu madenciler nöbet tutuyor"></a><div class="cap"><h3>Kapıdaki madenciler</h3><p class="en" lang="en">Miners at a tower gate</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="galeri/tarihce_intro_7.jpg" style="--pic:#3e2a22" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_7_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Gün batımında, basamak basamak kazılmış maden vadisine arkası dönük duran asker ekibi"></a><div class="cap"><h3>Vadiye bakan ekip</h3><p class="en" lang="en">The squad looks over the mining valley</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/story_8.jpg" style="--pic:#403734" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Oyunun giriş filminden."><img src="galeri/tarihce_intro_8_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Dağa doğru yürüyen asker ekibi, tepede bir gemi"></a><div class="cap"><h3>Helion Dağı ve tepesindeki Ark</h3><p class="en" lang="en">Mount Helion and the Ark on its peak</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/prequel_1.jpg" style="--pic:#191a1e" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yalnızca &#x27;Hikâyenin başlangıcı&#x27; sayfası için çizildi; oyunda oynayan bir film değil."><img src="galeri/tarihce_prequel_1_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Karanlık bir gezegenin üstünde yörüngedeki üç sonda ve yüzeye inen tarama ışınları"></a><div class="cap"><h3>Yörüngedeki sondalar yüzeyi tarıyor</h3><p class="en" lang="en">Probes scan the surface from orbit</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/prequel_2.jpg" style="--pic:#130f0f" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yalnızca &#x27;Hikâyenin başlangıcı&#x27; sayfası için çizildi; oyunda oynayan bir film değil."><img src="galeri/tarihce_prequel_2_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Eldivenli bloklu bir elin tuttuğu, içten mor-beyaz parlayan kristal"></a><div class="cap"><h3>Kara camın altındaki kristal</h3><p class="en" lang="en">The crystal found under the black glass</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/prequel_3.jpg" style="--pic:#0e0b0a" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yalnızca &#x27;Hikâyenin başlangıcı&#x27; sayfası için çizildi; oyunda oynayan bir film değil."><img src="galeri/tarihce_prequel_3_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Loş bir toplantı odasında masanın çevresinde oturan bloklu figürler ve ortada parlayan, bir damarı turuncu işaretli gezegen hologramı"></a><div class="cap"><h3>Karar gezegenden uzakta verildi</h3><p class="en" lang="en">The decision was made far from the planet</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/prequel_4.jpg" style="--pic:#202328" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yalnızca &#x27;Hikâyenin başlangıcı&#x27; sayfası için çizildi; oyunda oynayan bir film değil."><img src="galeri/tarihce_prequel_4_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Kara cam ovaya inen iki kargo gemisi, havada asılı kül ve elinde lamba tutan küçük figürler"></a><div class="cap"><h3>İlk gemiler ovaya iniyor</h3><p class="en" lang="en">The first ships land on the plain</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+      <li class="it" data-kind="k"><a class="th" href="media/prequel_6.jpg" style="--pic:#0c0d0c" data-w="1280" data-h="720" data-tag="Konsept çizim: yapay zekâ ile çizildi (xAI Grok Imagine). Oyundan alınmış görüntü değil." data-note="Yalnızca &#x27;Hikâyenin başlangıcı&#x27; sayfası için çizildi; oyunda oynayan bir film değil."><img src="galeri/tarihce_prequel_6_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Külün içine yarı gömülmüş, eklemlerinde loş kehribar ışık olan küçük gri canlılar ve bir lamba ışığı"></a><div class="cap"><h3>Külün altındaki küçük canlılar</h3><p class="en" lang="en">Small creatures under the ash</p><p class="tag k"><b>Konsept çizim</b> · yapay zekâ ile çizildi</p></div></li>
+  </ul>
+</section>
+
+<section class="cat" id="kalkis" data-cat="kalkis">
+  <h2>Kalkış, kuşatma ve göç <span class="n">(14)</span></h2>
+  <p class="intro">Çıkış, kuşatma ve yürüyüş filmlerinden kareler.</p>
+  <p class="cnote">Üç filmden kareler: çıkış, kuşatma, yürüyüş.</p>
+  <ul class="gal">
+      <li class="it" data-kind="f"><a class="th" href="galeri/kalkis_dep_1.jpg" style="--pic:#2b221f" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Çıkış filminin ilk karesi."><img src="galeri/kalkis_dep_1_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Turuncu bir gökyüzünün altında, ateş püskürterek kalkan gemilere arkası dönük duran ekip"></a><div class="cap"><h3>Gemiler kalkarken</h3><p class="en" lang="en">The ships lift off</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/dep_2.jpg" style="--pic:#251c18" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Çıkış filminden."><img src="galeri/kalkis_dep_2_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Kırmızı atkılı komutan ve ekip, yakın plan"></a><div class="cap"><h3>Ekip, yakın plan</h3><p class="en" lang="en">The squad, close up</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="galeri/kalkis_dep_3.jpg" style="--pic:#2d1d26" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Çıkış filminden."><img src="galeri/kalkis_dep_3_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Mor-turuncu gökyüzünde alev izi bırakarak yükselen gemiler; altta ekibin kara siluetleri"></a><div class="cap"><h3>Giden gemiler</h3><p class="en" lang="en">The ships climb away</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/dep_4.jpg" style="--pic:#16151d" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Çıkış filminden."><img src="galeri/kalkis_dep_4_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Lav çatlaklı kara bir vadide, arkası dönük yürüyen ekip; uzakta bir dağın tepesi"></a><div class="cap"><h3>Vadiye doğru</h3><p class="en" lang="en">Into the valley</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/cap_1.jpg" style="--pic:#473b31" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Kuşatma filminden."><img src="galeri/kalkis_cap_1_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Ekip, arkalarında patlayan turuncu ışıkla taş bir sığınağın kapısına koşuyor; uçuşan küpler"></a><div class="cap"><h3>Sığınağa koşu</h3><p class="en" lang="en">Running for the bunker as the dawn line arrives</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="galeri/kalkis_cap_2.jpg" style="--pic:#191715" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Kuşatma filminin bir klibinin ilk karesi."><img src="galeri/kalkis_cap_2_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Sığınağın içinde askerler başlarından aşağı su döküyor; pencerelerden turuncu ışık giriyor"></a><div class="cap"><h3>Su, başlardan aşağı</h3><p class="en" lang="en">Water over their heads before the line passes</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/cap_3.jpg" style="--pic:#14130f" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Kuşatma filminden."><img src="galeri/kalkis_cap_3_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Sığınağın duvarı boyunca oturmuş, başlarını ellerinin arasına almış askerler ve turuncu tulumlu madenciler"></a><div class="cap"><h3>Sığınakta bekleyiş</h3><p class="en" lang="en">Waiting inside the bunker</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="galeri/kalkis_cap_4.jpg" style="--pic:#15100b" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Kuşatma filminin bir klibinin ilk karesi."><img src="galeri/kalkis_cap_4_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Dar bir tünelde çömelmiş ekip; önlerinde kenarları ısıyla parlayan bir kapı ve dumanlar"></a><div class="cap"><h3>Parlayan kapı</h3><p class="en" lang="en">Crouching before the glowing door</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/cap_5.jpg" style="--pic:#221d21" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Kuşatma filminden."><img src="galeri/kalkis_cap_5_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Yanmış ovanın üstünde, dumanlar ve kor arasında duran taş sığınak ve çatısındaki ekip"></a><div class="cap"><h3>Çizgi geçti</h3><p class="en" lang="en">The line has passed</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="galeri/kalkis_exo_1.jpg" style="--pic:#2e2931" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Yürüyüş filminden."><img src="galeri/kalkis_exo_1_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Taş bir sığınağın önünde toplanan ekip; yanlarında, kapağı açık bir çukurda turuncu tulumlu madenciler"></a><div class="cap"><h3>Gün ağarırken sığınak</h3><p class="en" lang="en">The bunker at first grey</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/exo_2.jpg" style="--pic:#45413e" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Yürüyüş filminden."><img src="galeri/kalkis_exo_2_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Komutan ve bir mahkûm madenci"></a><div class="cap"><h3>Komutan ve ustabaşı</h3><p class="en" lang="en">The captain and the foreman</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/exo_3.jpg" style="--pic:#393638" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Yürüyüş filminden."><img src="galeri/kalkis_exo_3_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Kaskında lamba olan bir madenci ve arkasında kazmalı madenciler"></a><div class="cap"><h3>Ustabaşı ve madenciler</h3><p class="en" lang="en">The foreman among the miners</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="galeri/kalkis_exo_4.jpg" style="--pic:#4d4542" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Yürüyüş filminden."><img src="galeri/kalkis_exo_4_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Mavi kasklı, kırmızı atkılı komutanın yakın planı; arkasında yürüyen askerler"></a><div class="cap"><h3>Komutanın yüzü</h3><p class="en" lang="en">The captain&#x27;s face</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+      <li class="it" data-kind="f"><a class="th" href="media/exo_5.jpg" style="--pic:#24181c" data-w="1280" data-h="720" data-tag="Film karesi: oyunun kendi oynattığı bir filmden. Resmi yapay zekâ çizdi (xAI Grok Imagine)." data-note="Yürüyüş filminden."><img src="galeri/kalkis_exo_5_t.jpg" width="480" height="270" loading="lazy" decoding="async" alt="Ekip ve madenciler, ufukta tepeleri kızaran kulelerin göründüğü bir yolda birlikte yürüyor"></a><div class="cap"><h3>Sıradaki kuleye doğru</h3><p class="en" lang="en">On the march to the next tower</p><p class="tag f"><b>Film karesi</b> · oyunun filminden</p></div></li>
+  </ul>
+</section>
+
+
+<footer class="wrap-s">Cremation: Outrun the Dawn &middot; alpha &middot; yalnızca davetli test içindir, paylaşma. Görseller yapay zekâ ile üretildi. <a href="./">Ana sayfaya dön</a>.</footer>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-t" hidden>
+  <button class="lb-x" id="lb-x" type="button" aria-label="Kapat (Esc)">&times;</button>
+  <div class="lb-stage" id="lb-stage">
+    <button class="lb-nav lb-p" id="lb-p" type="button" aria-label="Önceki resim">&lsaquo;</button>
+    <img id="lb-img" alt="" decoding="async">
+    <button class="lb-nav lb-n" id="lb-n" type="button" aria-label="Sonraki resim">&rsaquo;</button>
+  </div>
+  <div class="lb-cap">
+    <p class="lb-t" id="lb-t"></p>
+    <p class="en" id="lb-en" lang="en"></p>
+    <p class="lb-tag" id="lb-tag"></p>
+    <p class="lb-note" id="lb-note"></p>
+    <p class="lb-pos"><span id="lb-pos" aria-live="polite"></span> · <a id="lb-open" href="#" target="_blank" rel="noopener">Resmi yeni sekmede aç</a></p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var sections = Array.prototype.slice.call(document.querySelectorAll(".cat"));
+  var btns = Array.prototype.slice.call(document.querySelectorAll(".filters button"));
+  var countEl = $("count");
+  var cur = "hepsi";
+
+  function visible() { return Array.prototype.slice.call(document.querySelectorAll(".cat:not([hidden]) a.th")); }
+  function setCat(c, store) {
+    if (c !== "hepsi" && !document.querySelector('.cat[data-cat="' + c + '"]')) c = "hepsi";
+    cur = c;
+    sections.forEach(function (s) { s.hidden = !(c === "hepsi" || s.getAttribute("data-cat") === c); });
+    btns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-cat") === c ? "true" : "false"); });
+    var n = visible().length;
+    countEl.textContent = n + " resim" + (c === "hepsi" ? ", sekiz kategoride" : "");
+    if (store) { try { history.replaceState(null, "", c === "hepsi" ? location.pathname + location.search : "#" + c); } catch (e) {} }
+  }
+  document.querySelector(".filters").hidden = false;
+  btns.forEach(function (b) { b.addEventListener("click", function () { setCat(b.getAttribute("data-cat"), true); }); });
+  window.addEventListener("hashchange", function () { setCat(location.hash.replace("#", ""), false); });
+  setCat(location.hash.replace("#", ""), false);
+
+  /* the lightbox: the large picture is fetched only when it is opened; the thumbnail stands in until it arrives */
+  var lb = $("lb"), img = $("lb-img"), stage = $("lb-stage"), xBtn = $("lb-x"), pBtn = $("lb-p"), nBtn = $("lb-n");
+  var list = [], idx = 0, opener = null, token = 0;
+  var shell = [document.querySelector("nav"), $("main")];
+  function setInert(on) { shell.forEach(function (e) { if (!e) return; if ("inert" in e) e.inert = on; if (on) e.setAttribute("aria-hidden", "true"); else e.removeAttribute("aria-hidden"); }); }
+  function show() {
+    var a = list[idx], li = a.closest(".it"), t = a.querySelector("img"), tok = ++token;
+    var big = a.getAttribute("href");
+    img.classList.add("loading");
+    img.alt = t.alt;
+    img.width = +a.getAttribute("data-w"); img.height = +a.getAttribute("data-h");
+    lb.style.setProperty("--pic", a.style.getPropertyValue("--pic") || "#000");
+    img.src = t.getAttribute("src");
+    $("lb-t").textContent = li.querySelector("h3").textContent;
+    $("lb-en").textContent = li.querySelector(".en").textContent;
+    var tag = $("lb-tag"); tag.textContent = a.getAttribute("data-tag"); tag.className = "lb-tag " + li.getAttribute("data-kind");
+    $("lb-note").textContent = a.getAttribute("data-note") || "";
+    $("lb-pos").textContent = (idx + 1) + " / " + list.length;
+    $("lb-open").setAttribute("href", big);
+    var loader = new Image();
+    loader.onload = function () { if (tok === token) { img.src = big; img.classList.remove("loading"); } };
+    loader.onerror = function () { if (tok === token) { img.classList.remove("loading"); $("lb-note").textContent = "Büyük resim yüklenemedi. Bağlantıyı yeni sekmede açmayı dene: " + big; } };
+    loader.src = big;
+  }
+  function open(a) {
+    list = visible(); idx = list.indexOf(a); if (idx < 0) return;
+    opener = a; lb.hidden = false; document.body.classList.add("lb-open"); setInert(true);
+    show(); xBtn.focus();
+  }
+  function close() {
+    token++; lb.hidden = true; document.body.classList.remove("lb-open"); setInert(false); img.removeAttribute("src");
+    if (opener) { try { opener.focus(); } catch (e) {} }
+  }
+  function step(d) { if (list.length < 2) return; idx = (idx + d + list.length) % list.length; show(); }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a.th") : null;
+    if (a && !e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) { e.preventDefault(); open(a); }
+  });
+  xBtn.addEventListener("click", close);
+  pBtn.addEventListener("click", function () { step(-1); });
+  nBtn.addEventListener("click", function () { step(1); });
+  lb.addEventListener("click", function (e) { if (e.target === lb || e.target === stage) close(); });
+  document.addEventListener("keydown", function (e) {
+    if (lb.hidden) return;
+    if (e.key === "Escape") { e.preventDefault(); close(); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
+    else if (e.key === "Tab") {
+      var f = [xBtn, pBtn, nBtn, $("lb-open")];
+      var i = f.indexOf(document.activeElement);
+      e.preventDefault();
+      f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+    }
+  });
+  var sx = 0, sy = 0;
+  lb.addEventListener("touchstart", function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, {passive: true});
+  lb.addEventListener("touchend", function (e) {
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) step(dx < 0 ? 1 : -1);  /* a swipe left shows the next picture, right the one before */
+  }, {passive: true});
+})();
+</script>
+</body>
+</html>
