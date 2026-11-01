@@ -255,7 +255,7 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
       <figure><img loading="lazy" src="media/story_3.jpg" alt="Kulenin dibinde patlayan zemin, uçuşan küpler ve alev"><figcaption>Patlayan zemin (giriş filminden).</figcaption></figure></div>
     <div class="beat"><div><span class="yr">Blockbench ile figürler</span><h3>Her asker, tek bir iskeletin üstünde</h3>
       <p>Askerleri Blockbench'te Minecraft-deri biçiminde modelledik: on üç kemikli bir iskelet (diz, dirsek, omurga ve boyun dahil), glTF olarak oyuna girdi. Bir shader her askere kendi renk, ıslaklık ve ısı değerini verir. Kırk figürlük laboratuvar ölçümünde iskeletli asker, kutu askerle aynı maliyette çıktı.</p>
-      <p>Koşu, zıplama, kayma, düşme, yuvarlanma, kalkma, yanma, nişan alma ve medik iyileştirmesi için 29 klip ve prosedürel pozlar var. Oyunda mahkûm madenciler, ustabaşı, sürünen yaratık, uçan tükürücüler ve bir boss var. İri ve kanatlı yaratıkların iskeletli modelleri yapıldı; bu pakette henüz küplerden yapılmış figürler görünüyor. Aynı iskelet iki görünümde de çalışıyor (aşağıda).</p></div>
+      <p>Koşu, zıplama, kayma, düşme, yuvarlanma, kalkma, yanma, nişan alma ve medik iyileştirmesi için 29 klip ve prosedürel pozlar var. Oyunda mahkûm madenciler, ustabaşı, sürünen yaratık, uçan tükürücüler ve bir boss var. Yaratıkların hepsi iskeletli Blockbench modelleriyle gelir; modeller yüklenemezse eski küp figürler çıkar. Aynı iskelet iki görünümde de çalışıyor (aşağıda).</p></div>
       <figure><img loading="lazy" src="media/fig_squad.jpg" alt="Koşan ekip: kamuflajlı askerler, sırtında yeşil artılı medik çantası"><figcaption>Koşan ekip, oyun içinden. Sırtında yeşil artı olan DOC.</figcaption></figure></div>
     <div class="beat"><div><span class="yr">Altyapı</span><h3>Aynı tohum, aynı koşu</h3>
       <p>Oyun Godot 4.7 ile yazıldı (GDScript). Apple Silicon'da Metal, Intel Mac'te MoltenVK, Windows'ta Vulkan ile çizer; Vulkan yoksa DirectX 12'ye düşer. Her koşu bir tohumdan üretilir: aynı tohum aynı araziyi, engelleri ve tehlikeleri getirir. Her bölge bir veri kümesidir: zemin, gök, hava, ışık ve kül oranı tek yerden okunur. Koşu, saldırı ve savunma aynı bölgeyi giyer.</p>
@@ -306,13 +306,18 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
       <li>Güneş Çizgisinin önünde koşu: kaya, çatlak, lav, gayzer, rüzgâr ve yağan taşlar.</li>
       <li>Değişken zıplama (kısa, uzun, koşarken daha uzun), kayma, hızlanma ve lider değiştirme; düşme, yuvarlanma ve kalkış hareketleri.</li>
       <li>A ya da D'ye iki kez basınca yana yuvarlanma (darbeler yarı hasar verir); kaya ya da kirişe yüklenen lider alçak engelin üstünden aşar, kirişin altından yuvarlanarak geçer, kayanın yanından yuvarlanıp dolanır.</li>
+      <li>Atılma: <kbd>W</kbd>'ye iki kez bas, 4 metre ileri atıl (hızlanma çubuğundan 1,14 sn harcar; azsa "SPRINT BAR TOO LOW" yazar). <kbd>S</kbd>'ye iki kez bas, fren yap. İki atılma arası 0,8 sn.</li>
+      <li>Atılmanın ve yana yuvarlanmanın ortasındaki yaklaşık 0,3 saniyede yuvarlanan kaya, düşen kaya, gayzer, lav ve spor bulutu yaralamaz. Çatlağa düşmeyi ve Güneş Çizgisini önlemez. Yalnızca koşuda, yalnızca liderde.</li>
       <li>Beş bölge; her birinin kendi zemini, göğü ve havası var.</li>
       <li>İskeletli askerler; <kbd>F10</kbd> ile Minecraft ve Lego görünümü (koşuda).</li></ul></div>
     <div><h3>Saldırı ve savunma</h3><ul class="ticks">
       <li>Saldırı: 150 metrelik açık zemin, üç siper hattı, çatıda iki makineli tüfek yuvası, siperlerin arkasında isyancı madenciler; bomba, roket, mayın, yatma ve emekleme.</li>
+      <li>Saldırıda <kbd>W</kbd> ya da <kbd>S</kbd>'ye iki kez basınca lider 4 metre ileri ya da geri gider (0,8 sn bekleme).</li>
       <li>Güneş Çizgisi yetişirse askerler yanar, düşer ve kömürleşir; çatıdaki yuvalar susunca isyancı madenciler teslim olur.</li>
       <li>Savunma: beş dalga, duvar bölümleri, uçan tükürücüler, beşinci dalgada bir boss; roketatar, makineli tüfek ve silah yükseltmeleri.</li>
-      <li>Yaratıklar yeni görünümleriyle gelir (kara deri, kor damarları, kehribar gözler; küplerden yapılmış figürler): sürünenler (normal, iri ve tükürücü), uçan tükürücüler ve beşinci dalgada Gharial. Vurulan düşer, patlamayla yanan kömürleşip küle döner.</li>
+      <li>Uçanların canı 1,5 kat. Gharial uzun bacaklı yapıldı (kabuk 6 m, karın yerden 3,6 m).</li>
+      <li>Yaratıklar iskeletli modelleriyle gelir (kara deri, kor damarları, kehribar gözler): sürünenler (normal, iri ve tükürücü), uçan tükürücüler ve her kulenin beşinci dalgasında Gharial. Modeller yüklenemezse eski küp figürler çıkar. Vurulan düşer, patlamayla yanan kömürleşip küle döner.</li>
+      <li>Roket izi, geri tepme, mayın ve atılma tozu küp bloklardan; patlama ve namlu parlamaları yuvarlak kalıyor. Görünüşü hâlâ ayarlanıyor.</li>
       <li>Her iki sahne de kulenin bölgesinin zeminini ve havasını giyer; patlamalar iz bırakır.</li></ul></div>
     <div><h3>Zincir ve hikâye</h3><ul class="ticks">
       <li>Beş kule arka arkaya; giriş, çıkış, kuşatma ve yürüyüş filmleriyle bağlı.</li>
@@ -326,18 +331,13 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
   <div class="wrap-s"><span class="eyebrow">Sırada</span><h2>Sonra ne geliyor</h2>
   <p class="dim">Alpha'nın bittiği yer, hikâyenin ortası. Geri kalan yol:</p></div>
   <div class="cols">
-    <div><h3>Alpha.6'da gelecekler</h3><ul class="ticks next">
-      <li><b>Atılma</b>: W'ye iki kez basınca ileri, S'ye iki kez basınca geri 3 metre atılırsın (koşuda ve saldırıda). Geliştirme sürümünde çalışıyor; alpha.6'da 4 metreye çıkıyor.</li>
-      <li><b>Atılmada ve yuvarlanmada korunma</b>: koşuda, atılmanın ve yana yuvarlanmanın ortasında yaklaşık 0,3 saniye kaya, gayzer ve lav yaralamayacak. Şu an yapılıyor, henüz hazır değil.</li>
-      <li><b>Daha dayanıklı uçanlar</b>: savunmada uçanların canı 1,5 kat. Geliştirme sürümünde var; fazla zor ya da kolay gelirse söyle.</li>
-      <li><b>Toz ve duman küp bloklarla</b>: roket izi, geri tepme ve mayın tozu yuvarlak toplar yerine küp. Geliştirme sürümünde var, görünüşü hâlâ ayarlanıyor.</li>
-      <li><b>İskeletli yaratıklar</b>: sürünenler, uçanlar ve Gharial küp figürler yerine Blockbench iskeletli modelleriyle gelir. Geliştirme sürümünde varsayılan.</li></ul></div>
+    <div><h3>Alpha.7'de gelecekler</h3><ul class="ticks next">
+      <li><b>Boss'un yeni hareketleri</b>: yanlara kayar, zıplar, üstüne atılır, ayağını yere vurur; vuruş askerleri düşürür. Mantığı yazıldı, geliştirme sürümünde de kapalı. Hareket klipleri hazırlanıyor; görüntüsü ve sesi yapılana kadar açılmayacak.</li>
+      <li><b>Uçanların kanat rüzgârı</b>: uçanlar askerleri savuran bir kanat rüzgârı yapacak. Mantığı yazıldı, geliştirme sürümünde de kapalı. Kanat klipleri hazır ama oyuna bağlanmadı; sesi yok, nasıl çalışacağı değişebilir.</li></ul></div>
     <div><h3>Yakında</h3><ul class="ticks next">
       <li><b>Helion duvarı tırmanışı</b>: beşinci kuleden sonra kapıdan geçip duvara tırmanış.</li>
       <li><b>Kül Kraliçesi</b> ve kovanın kapısı (Hivegate) finali.</li>
-      <li>Gharial'ın daha uzun bacaklı hâli, bölgeye göre renk değiştiren yaratıklar ve diğer dört boss (konseptleri galeride).</li>
-      <li><b>Boss'un yeni hareketleri</b>: yanlara kayar, zıplar, üstüne atılır, ayağını yere vurur; vuruş askerleri düşürür. Mantığı yazıldı ama oyunda kapalı: görüntüsü ve sesi yapılana kadar açılmayacak. Alpha.6'dan sonra.</li>
-      <li><b>Uçanların kanat rüzgârı</b>: uçanlar askerleri savuran bir kanat rüzgârı yapacak. Mantığı yazıldı ama oyunda kapalı; görüntüsü ve sesi yok, nasıl çalışacağı değişebilir. Alpha.6'dan sonra.</li>
+      <li>Yaratıkların bölgeye göre tam deri değişimi (sırttaki kül ve çatlak rengi şimdiden bölgeye uyuyor) ve diğer dört boss (konseptleri galeride).</li>
       <li>Alpha geri bildirimlerine göre hata düzeltmeleri ve denge ayarı.</li></ul></div>
     <div><h3>Sonra</h3><ul class="ticks later">
       <li>Dağdaki Ark'a varış, göktaşı ve plazma gemisi kaçışı.</li>
@@ -354,7 +354,7 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
 
 <section id="indir">
   <div class="wrap-s"><span class="eyebrow">İndir</span><h2>Alpha <span class="ver"></span></h2>
-  <!--NOTES--><p class="dim">Alpha.4'ten bu yana: A ya da D'ye iki kez basınca yana yuvarlanıyorsun. Saldırıda Güneş Çizgisi yetişirse askerler yanıyor, düşüyor ve kömürleşiyor; çatıdaki yuvalar susunca isyancı madenciler teslim oluyor. Savunmada sürünenler (normal, iri, tükürücü), uçan tükürücüler ve Gharial yeni görünümleriyle geliyor. Bilinen sorunlar: 2015 model Intel Mac'te alpha.4 açılışta çöktü, alpha.5 orada denenmedi; paket Apple'ın noter onayından geçmedi (Kurulum'a bak); savunmanın ilk dalgası zor olabilir. Eski bir sürümü indirdiysen yenisini indir.</p><!--/NOTES-->
+  <!--NOTES--><p class="dim">Alpha.5'ten bu yana: W'ye iki kez basınca 4 metre ileri atılıyorsun. S'ye iki kez basınca koşuda fren yapıyorsun, saldırıda 4 metre geri adım atıyorsun. Koşuda atılmanın ve yana yuvarlanmanın ortasındaki yaklaşık 0,3 saniyede kaya, gayzer ve lav seni yaralamıyor. Savunmada uçanların canı 1,5 kat. Yaratıklar iskeletli modelleriyle geliyor, Gharial daha uzun bacaklı. Roket izi, geri tepme ve mayın tozu küp bloklardan. Bilinen sorunlar: 2015 model Intel Mac'te alpha.4 açılışta çöktü, alpha.5'i ve alpha.6'yı orada denemedik; paket Apple'ın noter onayından geçmedi (Kurulum'a bak); savunmanın ilk dalgası zor olabilir, uçanlar daha dayanıklı olduğu için daha da zor olabilir. Yaratık modelleri paketten ilk kez okunuyor: yüklenemezse oyun eski küp figürlere döner. Sorun yaşarsan oyunu <code>CremationOutrunTheDawn.exe -- --creatures=box</code> ile aç (Windows). Eski bir sürümü indirdiysen yenisini indir.</p><!--/NOTES-->
   <p class="note">Bu bir alpha: hata, eksik ses ve kaba görünüş olabilir. Oyun Helion duvarının kapısında biter, tırmanış henüz yok. Yalnızca davetliler için, paylaşma. Denediğin için sağ ol.</p></div>
   <div class="grid g2" style="max-width:760px;margin-inline:auto">
     <div class="card" id="card-win"><h3>Windows</h3><p class="dim" style="font-size:.9rem">Windows 10 / 11, 64 bit · <span class="size" data-k="win"></span></p>
@@ -388,9 +388,10 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
 
   <h2 style="margin-top:36px">Kontroller</h2>
   <div class="tw"><table>
-    <tr><th>Koşu</th><td><kbd>A</kbd> <kbd>D</kbd> yön; iki kez bas = yana yuvarlan, darbeler yarı hasar verir · <kbd>W</kbd> hızlan · <kbd>S</kbd> geriye bak · <kbd>Boşluk</kbd> zıpla: kısa bas = kısa zıplama, basılı tut = uzak zıplama, <kbd>W</kbd> ile hızlanırken = en uzak · <kbd>Shift</kbd> kay · <kbd>Tab</kbd> lideri değiştir · <kbd>E</kbd> "beni takip et" · <kbd>X</kbd> doktoru çağır (bir sağlık çantası harcar) · <kbd>R</kbd> yeniden başlat (iki kez bas)</td></tr>
-    <tr><th>Saldırı</th><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> yürü; <kbd>A</kbd> ya da <kbd>D</kbd>'ye iki kez bas = yana yuvarlan (ayaktayken de yerdeyken de) · fare nişan al · sol tık hedefi işaretle · sağ tık ya da <kbd>G</kbd> bomba at · <kbd>F</kbd> nişan aldığın yere roket (yuva, madenci, çatı ya da zemin) · <kbd>Q</kbd> ekibi nişan aldığın siperin arkasına gönder · <kbd>E</kbd> ekibi geri çağır · <kbd>C</kbd> eğil, yat, kalk · <kbd>Boşluk</kbd> engeli aş · <kbd>Shift</kbd> kirişin altından kay</td></tr>
+    <tr><th>Koşu</th><td><kbd>A</kbd> <kbd>D</kbd> yön; iki kez bas = yana yuvarlan, darbeler yarı hasar verir · <kbd>W</kbd> hızlan; iki kez bas = 4 metre ileri atıl · <kbd>S</kbd> basılı tut = geriye bak; iki kez bas = fren · atılmanın ve yuvarlanmanın ortasındaki 0,3 sn kaya, gayzer, lav ve spor bulutu hasar vermez (çatlak ve Güneş Çizgisi yine verir; yalnızca koşuda) · <kbd>Boşluk</kbd> zıpla: kısa bas = kısa zıplama, basılı tut = uzak zıplama, <kbd>W</kbd> ile hızlanırken = en uzak · <kbd>Shift</kbd> kay · <kbd>Tab</kbd> lideri değiştir · <kbd>E</kbd> "beni takip et" · <kbd>X</kbd> doktoru çağır (bir sağlık çantası harcar) · <kbd>R</kbd> yeniden başlat (iki kez bas)</td></tr>
+    <tr><th>Saldırı</th><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> yürü; <kbd>A</kbd> ya da <kbd>D</kbd>'ye iki kez bas = yana yuvarlan (ayaktayken de yerdeyken de) · <kbd>W</kbd> ya da <kbd>S</kbd>'ye iki kez bas = 4 metre ileri ya da geri atıl · fare nişan al · sol tık hedefi işaretle · sağ tık ya da <kbd>G</kbd> bomba at · <kbd>F</kbd> nişan aldığın yere roket (yuva, madenci, çatı ya da zemin) · <kbd>Q</kbd> ekibi nişan aldığın siperin arkasına gönder · <kbd>E</kbd> ekibi geri çağır · <kbd>C</kbd> eğil, yat, kalk · <kbd>Boşluk</kbd> engeli aş · <kbd>Shift</kbd> kirişin altından kay</td></tr>
     <tr><th>Savunma</th><td><kbd>A</kbd> ya da <kbd>D</kbd>'ye iki kez bas = yana yuvarlan (ayaktayken) · fare nişan al · sol tık hedefi işaretle · sağ tık ya da <kbd>G</kbd> bomba at · <kbd>F</kbd> hava roketi · <kbd>X</kbd> düşen asker varken medik · <kbd>Tab</kbd> komutanı geri al. Ekrandaki ipucu satırı tuşları gösterir.</td></tr>
+    <tr><th>Sığınak</th><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> yürü · <kbd>Tab</kbd> lideri değiştir · yaralının yanında <kbd>X</kbd> basılı tut = iyileştir · <kbd>Enter</kbd> çık · <kbd>R</kbd> yeniden başlat</td></tr>
   </table></div>
 
   <h2 style="margin-top:36px">Bir sorun olursa</h2>
@@ -404,7 +405,7 @@ h1.logo{margin:0 0 6px;line-height:0}h1.logo img{display:block;width:min(540px,8
 </main>
 <script>
 /* Filled by tools/release/publish_alpha.sh: the version, the base URL of the release files, their sizes. Empty base = the buttons stay off. */
-var RELEASE = {version: "0.1.0-alpha.5", base: "https://github.com/alptekinkekilli/cremation-alpha/releases/download/v0.1.0-alpha.5", size: {win: "255 MB", mac: "276 MB"}};
+var RELEASE = {version: "0.1.0-alpha.6", base: "https://github.com/alptekinkekilli/cremation-alpha/releases/download/v0.1.0-alpha.6", size: {win: "255 MB", mac: "277 MB"}};
 (function () {
   var v = RELEASE.version;
   Array.prototype.forEach.call(document.querySelectorAll(".ver"), function (e) { e.textContent = v; });
