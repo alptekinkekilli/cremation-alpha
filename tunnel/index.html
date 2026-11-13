@@ -363,27 +363,38 @@ body {
 
   // the title loop: decoded once, played as a looping Web Audio buffer (no encoder gap at the seam), -8 dB under the SOUND slider
   const LOOP_GAIN = Math.pow(10, -8 / 20);
-  let music = null, musicData = null, musicOn = false;
-  try { fetch('title/loop.wav').then(function (r) { return r.ok ? r.arrayBuffer() : null; }).then(function (b) { musicData = b; if (b && musicOn) playMusic(); }).catch(function () {}); } catch (e) {}
-  function playMusic() {
-    if (music || !musicData || mode !== 'title' || started) return;
+  let music = null, musicData = null;
+  try { fetch('title/loop.wav').then(function (r) { return r.ok ? r.arrayBuffer() : null; }).then(function (d) { musicData = d; startLoop(); }).catch(function () {}); } catch (e) {}
+  // the context is made and resumed INSIDE the tap (a context made later, from the fetch, would stay suspended until a second tap)
+  function musicContext() {
+    if (music || mode !== 'title' || started) return;
     const Ctx = window.AudioContext || window.webkitAudioContext;
     if (!Ctx) return;
-    const ctx = new Ctx(), gain = ctx.createGain(), data = musicData;
-    musicData = null;
+    const ctx = new Ctx(), gain = ctx.createGain();
     gain.gain.value = 0;
     gain.connect(ctx.destination);
     music = { ctx: ctx, gain: gain, src: null };
-    ctx.decodeAudioData(data, function (buf) {
-      if (!music || music.ctx !== ctx) return;
-      const src = ctx.createBufferSource();
-      src.buffer = buf; src.loop = true; src.connect(gain); src.start();
-      music.src = src;
-      gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(LOOP_GAIN * level, ctx.currentTime + 1.5);
-    }, function () {});
     if (ctx.state !== 'running') ctx.resume().catch(function () {});
   }
+  function startLoop() {
+    if (!music || music.src || !musicData) return;
+    const m = music, data = musicData;
+    musicData = null;
+    m.src = true;  // (taken: one decode)
+    m.ctx.decodeAudioData(data, function (buf) {
+      if (music !== m) return;
+      const src = m.ctx.createBufferSource();
+      src.buffer = buf; src.loop = true; src.connect(m.gain); src.start();
+      m.src = src;
+      m.gain.gain.setValueAtTime(0, m.ctx.currentTime);
+      m.gain.gain.linearRampToValueAtTime(LOOP_GAIN * level, m.ctx.currentTime + 1.5);
+    }, function () {});
+  }
+  // a hidden page (another tab, a locked phone) silences the title loop; it comes back on the title only
+  document.addEventListener('visibilitychange', function () {
+    if (!music) return;
+    try { if (document.hidden) music.ctx.suspend(); else if (mode === 'title' && !started) music.ctx.resume(); } catch (e) {}
+  });
   function musicLevel() { if (music) music.gain.gain.setTargetAtTime(LOOP_GAIN * level, music.ctx.currentTime, 0.05); }
   function stopMusic() {
     if (!music) return;
@@ -392,9 +403,9 @@ body {
     const made = window.__godotAudioContexts, at = made ? made.indexOf(m.ctx) : -1;
     if (at >= 0) made.splice(at, 1);
     try { m.gain.gain.cancelScheduledValues(m.ctx.currentTime); m.gain.gain.setTargetAtTime(0, m.ctx.currentTime, 0.12); } catch (e) {}
-    setTimeout(function () { try { if (m.src) m.src.stop(); m.ctx.close(); } catch (e) {} }, 700);
+    setTimeout(function () { try { if (m.src && m.src.stop) m.src.stop(); m.ctx.close(); } catch (e) {} }, 700);
   }
-  function firstTap() { if (mode === 'title' && !started) { musicOn = true; playMusic(); } }
+  function firstTap() { if (mode === 'title' && !started) { musicContext(); startLoop(); } }
   for (const t of ['touchend', 'click', 'keydown']) wrap.addEventListener(t, firstTap, true);
 
   const menuBtn = el('button', 'position:fixed;top:6px;left:230px;z-index:30;display:none;font:700 11px monospace;letter-spacing:.1em;color:' +
