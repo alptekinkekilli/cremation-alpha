@@ -288,30 +288,124 @@ body {
 })();
 </script>
 <script>
+// The web page's menu (the user's q634 `html_menu_web` of 2026-11-12: title, the stage's line, START, SETTINGS, CONTROLS, the engine
+// loading behind; and their order of 2026-11-13: "yeniden başlatma menüsü yok bir de her bölümde başla diye bir buton olması lazım. bu
+// sesin de tıklamayla önce gelmesini sağlar"). The game waits paused (scripts/ui/web_gate.gd) until START; START is also the first tap a
+// browser needs before it plays sound. In the game a MENU button pauses it: RESUME, RESTART, SETTINGS, CONTROLS, FULL SCREEN.
+// Injected by tools/release/web_tunnel_pack.py before index.js. Words on the screen are English capitals (docs/ui-standard.md).
 (function () {
-  const el = document.documentElement;
-  if (!el.requestFullscreen) return;
-  function add() {
-    const b = document.createElement('button');
+  const C = { cream: '#e8e4da', amber: '#ffb347', dim: 'rgba(232,228,218,.55)', bg: 'rgba(8,9,11,.93)' };
+  const PC = [
+    ['CLICK', 'walk / fire'], ['SHIFT', 'hold still and fire'], ['ALT', 'back off and fire'], ['SPACE', 'weapon'],
+    ['RIGHT', 'use it'], ['C', 'lie (the Wizard)'], ['TAB', 'leader'], ['X', 'medic'], ['E', 'hold to free a group'],
+    ['ENTER', 'climb out'], ['R', 'again']];
+  const PHONE = [
+    ['STICK', 'move; tap it: AIM / MOVE'], ['FIRE', 'fire'], ['WPN', 'weapon'], ['USE', 'use it'], ['LIE', 'lie (the Wizard)'],
+    ['LEAD', 'leader'], ['MED', 'medic'], ['OUT', 'climb out / free']];
+  let ready = false, started = false, mode = 'title', panel = '';
+  let level = 0.8;
+  try { const v = parseFloat(localStorage.getItem('cremation.volume')); if (v >= 0 && v <= 1) level = v; } catch (e) {}
+
+  function el(tag, css, text) { const e = document.createElement(tag); if (css) e.style.cssText = css; if (text != null) e.textContent = text; return e; }
+  const btnCss = 'font:700 15px monospace;letter-spacing:.12em;color:' + C.cream + ';background:rgba(11,13,15,.7);border:1.5px solid ' +
+    C.dim + ';border-radius:10px;padding:10px 18px;margin:5px;min-width:150px;touch-action:manipulation;cursor:pointer';
+  function button(text, on, strong) {
+    const b = el('button', btnCss + (strong ? ';border-color:' + C.amber + ';color:' + C.amber + ';font-size:18px;min-width:200px' : ''), text);
     b.type = 'button';
-    b.textContent = 'FULL';
-    b.style.cssText = 'position:fixed;bottom:2px;left:50%;transform:translateX(-50%);z-index:30;font:600 10px monospace;color:#e8e4da;background:rgba(11,13,15,.6);' +
-      'border:1.5px solid rgba(232,228,218,.55);border-radius:12px;padding:3px 8px;touch-action:manipulation';
-    b.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (document.fullscreenElement) { document.exitFullscreen(); return; }
-      el.requestFullscreen({ navigationUI: 'hide' }).then(function () {
-        try { const lk = screen.orientation.lock('landscape'); if (lk && lk.catch) lk.catch(function () {}); } catch (err) {}
-      }).catch(function () {});
-    });
-    document.body.appendChild(b);
+    b.addEventListener('click', function (e) { e.stopPropagation(); on(); });
+    return b;
   }
-  if (document.readyState === 'complete') add(); else window.addEventListener('load', add);
+  function api() { return window.cremation || null; }
+  function call(name, arg) { const a = api(); if (a && a[name]) { try { a[name](arg); } catch (e) {} } }
+
+  const wrap = el('div', 'position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+    'background:' + C.bg + ';color:' + C.cream + ';font-family:monospace;text-align:center;padding:16px;box-sizing:border-box;overflow:auto');
+  const title = el('div', 'font:700 clamp(30px,8vw,56px) monospace;letter-spacing:.18em;color:' + C.amber, 'CREMATION');
+  const sub = el('div', 'font:600 clamp(12px,3vw,16px) monospace;letter-spacing:.3em;margin-bottom:10px', 'OUTRUN THE DAWN');
+  const line = el('div', 'font:500 13px monospace;letter-spacing:.06em;max-width:520px;margin:4px 0 10px;color:' + C.dim,
+    "THE TUNNELS: THE MINERS' FAMILIES ARE TRAPPED BELOW. FREE THEM AND CLIMB OUT BEFORE DUSK ENDS.");
+  const status = el('div', 'font:600 12px monospace;letter-spacing:.1em;margin:4px;color:' + C.dim, 'LOADING');
+  const row = el('div', 'display:flex;flex-wrap:wrap;justify-content:center;align-items:center');
+  const box = el('div', 'margin-top:8px;max-width:560px;width:100%');
+  wrap.append(title, sub, line, status, row, box);
+
+  const menuBtn = el('button', 'position:fixed;top:6px;left:230px;z-index:30;display:none;font:700 11px monospace;letter-spacing:.1em;color:' +
+    C.cream + ';background:rgba(11,13,15,.6);border:1.5px solid ' + C.dim + ';border-radius:12px;padding:4px 10px;touch-action:manipulation', 'MENU');
+  menuBtn.type = 'button';
+  menuBtn.addEventListener('click', function (e) { e.stopPropagation(); openPause(); });
+
+  function table(rows, head) {
+    const t = el('div', 'flex:1;min-width:220px;margin:6px;text-align:left');
+    t.append(el('div', 'font:700 12px monospace;letter-spacing:.12em;color:' + C.amber + ';margin-bottom:4px', head));
+    for (const r of rows) {
+      const d = el('div', 'font:500 12px monospace;line-height:1.6');
+      d.append(el('span', 'display:inline-block;min-width:64px;color:' + C.cream + ';font-weight:700', r[0]), el('span', 'color:' + C.dim, r[1]));
+      t.append(d);
+    }
+    return t;
+  }
+  function fillBox() {
+    box.textContent = '';
+    if (panel === 'controls') {
+      const d = el('div', 'display:flex;flex-wrap:wrap;justify-content:center');
+      d.append(table(PC, 'PC'), table(PHONE, 'PHONE'));
+      box.append(d);
+    } else if (panel === 'settings') {
+      const d = el('div', 'font:600 13px monospace;letter-spacing:.1em');
+      const label = el('span', 'margin-right:10px', 'SOUND ' + Math.round(level * 100));
+      const r = el('input', 'vertical-align:middle;width:200px');
+      r.type = 'range'; r.min = '0'; r.max = '100'; r.value = String(Math.round(level * 100));
+      r.addEventListener('input', function () {
+        level = r.value / 100; label.textContent = 'SOUND ' + r.value; call('volume', level);
+        try { localStorage.setItem('cremation.volume', String(level)); } catch (e) {}
+      });
+      d.append(label, r);
+      box.append(d);
+    }
+  }
+  function toggle(p) { panel = panel === p ? '' : p; fillBox(); }
+  function fullscreen() {
+    const de = document.documentElement;
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    if (!de.requestFullscreen) return;
+    de.requestFullscreen({ navigationUI: 'hide' }).then(function () {
+      try { const lk = screen.orientation.lock('landscape'); if (lk && lk.catch) lk.catch(function () {}); } catch (e) {}
+    }).catch(function () {});
+  }
+  function render() {
+    row.textContent = '';
+    if (mode === 'title') {
+      const s = button(ready ? 'START' : 'LOADING', start, true);
+      s.disabled = !ready; s.style.opacity = ready ? '1' : '.5';
+      row.append(s);
+    } else {
+      row.append(button('RESUME', resume, true), button('RESTART', restart));
+    }
+    row.append(button('SETTINGS', function () { toggle('settings'); }), button('CONTROLS', function () { toggle('controls'); }));
+    if (document.documentElement.requestFullscreen) row.append(button('FULL SCREEN', fullscreen));
+    status.style.display = mode === 'title' && !ready ? 'block' : 'none';
+    fillBox();
+  }
+  function hide() { wrap.style.display = 'none'; menuBtn.style.display = 'block'; const c = document.getElementById('canvas'); if (c) c.focus(); }
+  function start() { if (!ready) return; started = true; call('volume', level); call('start'); hide(); }
+  function resume() { call('pause', false); hide(); }
+  function restart() { call('restart'); hide(); }
+  function openPause() { if (!started) return; call('pause', true); mode = 'pause'; panel = ''; wrap.style.display = 'flex'; menuBtn.style.display = 'none'; render(); }
+
+  window.__cremationReady = function () { ready = true; render(); };
+  document.addEventListener('visibilitychange', function () { if (document.hidden && started && wrap.style.display === 'none') openPause(); });
+  setInterval(function () {
+    if (ready) return;
+    const p = document.getElementById('status-progress');
+    if (p && p.max > 0 && p.value > 0) status.textContent = 'LOADING ' + Math.round(100 * p.value / p.max) + '%';
+  }, 300);
+  function mount() { document.body.append(wrap, menuBtn); render(); if (api()) window.__cremationReady(); }
+  if (document.body) mount(); else window.addEventListener('DOMContentLoaded', mount);
 })();
 </script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23513652,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23515644,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 window.__audioMode = 'stream';
 if (/[?&]ses=sample\b/.test(location.search)) { window.__audioMode = 'sample'; }
 else { GODOT_CONFIG.args.push('--audio=stream'); }
