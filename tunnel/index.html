@@ -202,6 +202,38 @@ body {
     const W = window.AudioWorkletNode;
     window.AudioWorkletNode = class extends W { constructor(...a) { super(...a); cnt.wk++; } };
   }
+  // v13: which nodes are wired to a destination right now (godotengine/godot#119026: add_bus() at run time left Master off the speakers).
+  const toDst = new Set();
+  const meter = { an: null, buf: null, peak: 0, shown: 0 };
+  setInterval(function () {
+    if (!meter.an) return;
+    meter.an.getFloatTimeDomainData(meter.buf);
+    let m = 0; for (let i = 0; i < meter.buf.length; i++) { const v = Math.abs(meter.buf[i]); if (v > m) m = v; }
+    if (m > meter.peak) meter.peak = m;
+  }, 50);
+  setInterval(function () { meter.shown = meter.peak; meter.peak = 0; }, 1000);
+  cnt.out = function () { return meter.shown > 0 ? Math.round(20 * Math.log10(meter.shown)) + 'dB' : '-inf'; };
+  cnt.dst = function () { let n = 0; for (const x of toDst) if (x.context === made[0]) n++; return n; };
+  try {
+    const c0 = AudioNode.prototype.connect, d0 = AudioNode.prototype.disconnect;
+    AudioNode.prototype.connect = function (dest, ...a) {
+      if (window.AudioDestinationNode && dest instanceof AudioDestinationNode) {
+        toDst.add(this);
+        try {
+          const ctx = this.context;
+          if (ctx === made[0]) {
+            if (!meter.an || meter.an.context !== ctx) { meter.an = ctx.createAnalyser(); meter.an.fftSize = 2048; meter.buf = new Float32Array(2048); }
+            c0.call(this, meter.an);
+          }
+        } catch (e) {}
+      }
+      return c0.call(this, dest, ...a);
+    };
+    AudioNode.prototype.disconnect = function (...a) {
+      if (a.length === 0 || (window.AudioDestinationNode && a[0] instanceof AudioDestinationNode)) toDst.delete(this);
+      return d0.apply(this, a);
+    };
+  } catch (e) {}
   window.addEventListener('error', function (e) { cnt.err = String(e.message || '').slice(0, 40); });
   window.addEventListener('unhandledrejection', function (e) { cnt.err = String(e.reason || '').slice(0, 40); });
 
@@ -231,7 +263,7 @@ body {
     function show() {
       const ctx = made[0];
       const st = ctx ? ctx.state : 'none';
-      b.textContent = 'SOUND ▶ ' + st + ' html-' + html.state + ' ' + (ctx ? ctx.sampleRate : '-') + ' src' + cnt.src + ' wk' + cnt.wk +
+      b.textContent = 'SOUND ▶ ' + st + ' html-' + html.state + ' ' + (ctx ? ctx.sampleRate : '-') + ' src' + cnt.src + ' wk' + cnt.wk + ' dst' + cnt.dst() + ' out' + cnt.out() +
         (navigator.audioSession ? ' ' + navigator.audioSession.type : '') + (cnt.err ? ' ERR ' + cnt.err : '');
       b.style.borderColor = st === 'running' ? 'rgba(255,179,71,.9)' : 'rgba(232,228,218,.55)';
     }
@@ -279,7 +311,7 @@ body {
 </script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23512404,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23512500,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
