@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+		<title>Cremation - Outrun the Dawn</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: #242424;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-splash.show-image--false {
+	display: none;
+}
+
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+
+#status-progress, #status-notice {
+	display: none;
+}
+
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+		</style>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+
+	</head>
+	<body>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+		<script>
+(function () {
+  const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
+  const realFetch = window.fetch.bind(window);
+  window.fetch = async function (input, init) {
+    const url = typeof input === 'string' ? input : input.url;
+    const key = Object.keys(PARTS).find(k => url.split('?')[0].endsWith(k));
+    if (!key) return realFetch(input, init);
+    const blobs = [];
+    for (const p of PARTS[key]) {
+      const r = await realFetch(p);
+      if (!r.ok) throw new Error('part ' + p + ' ' + r.status);
+      blobs.push(await r.blob());
+    }
+    const stream = new Blob(blobs).stream().pipeThrough(new DecompressionStream('gzip'));
+    const type = key.endsWith('.wasm') ? 'application/wasm' : 'application/octet-stream';
+    return new Response(stream, { status: 200, headers: { 'Content-Type': type } });
+  };
+})();
+</script>
+<script>
+(function () {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+  const made = [];
+  window.__godotAudioContexts = made;
+  for (const name of ['AudioContext', 'webkitAudioContext']) {
+    const Orig = window[name];
+    if (!Orig) continue;
+    window[name] = class extends Orig { constructor(...a) { super(...a); made.push(this); } };
+  }
+  function unlock() {
+    for (const ctx of made) {
+      if (ctx.state === 'running') continue;
+      try {
+        ctx.resume();
+        const src = ctx.createBufferSource();
+        src.buffer = ctx.createBuffer(1, 1, 22050);
+        src.connect(ctx.destination);
+        src.start(0);
+      } catch (e) {}
+    }
+  }
+  for (const ev of ['touchend', 'pointerup', 'click', 'keydown']) window.addEventListener(ev, unlock, { capture: true, passive: true });
+
+  // v11 counters (the user's fourth phone test of 2026-11-13: beep heard, the game silent, the engine context 'running'): how many
+  // AudioBufferSourceNode.start() calls Godot made (its sample playback), how many AudioWorkletNodes, the last page error.
+  const cnt = { src: 0, wk: 0, err: '' };
+  window.__godotAudioCount = cnt;
+  try {
+    const s0 = AudioBufferSourceNode.prototype.start;
+    AudioBufferSourceNode.prototype.start = function (...a) { cnt.src++; return s0.apply(this, a); };
+  } catch (e) {}
+  if (window.AudioWorkletNode) {
+    const W = window.AudioWorkletNode;
+    window.AudioWorkletNode = class extends W { constructor(...a) { super(...a); cnt.wk++; } };
+  }
+  window.addEventListener('error', function (e) { cnt.err = String(e.message || '').slice(0, 40); });
+  window.addEventListener('unhandledrejection', function (e) { cnt.err = String(e.reason || '').slice(0, 40); });
+
+  function tone(ctx, freq, at) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const t = ctx.currentTime + at;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.15, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
+    osc.frequency.value = freq;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(t); osc.stop(t + 0.3);
+  }
+
+  // The sound button (touch screens only): a DOM button outside the canvas, so its tap is a plain in-frame gesture. v11: it sits in the
+  // top strip left of the radar (v10 covered LIE), and a tap plays TWO tones: a LOW one on the ENGINE's own context, then a HIGH one on a
+  // fresh context 0.4 s later. Low+high = the engine context sounds, Godot's graph is the fault; high only = the engine context is deaf.
+  function soundButton() {
+    if (!('ontouchstart' in window) && !(navigator.maxTouchPoints > 0)) return;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = 'TAP FOR SOUND';
+    b.style.cssText = 'position:fixed;top:6px;right:150px;z-index:30;font:600 9px monospace;letter-spacing:.04em;color:#e8e4da;' +
+      'background:rgba(11,13,15,.6);border:1.5px solid rgba(232,228,218,.55);border-radius:12px;padding:3px 8px;touch-action:manipulation;' +
+      'max-width:200px;white-space:normal;text-align:left';
+    function show() {
+      const ctx = made[0];
+      const st = ctx ? ctx.state : 'none';
+      b.textContent = 'SND ' + st + ' ' + (ctx ? ctx.sampleRate : '-') + ' src' + cnt.src + ' wk' + cnt.wk +
+        (navigator.audioSession ? ' ' + navigator.audioSession.type : '') + (cnt.err ? ' ERR ' + cnt.err : '');
+      b.style.borderColor = st === 'running' ? 'rgba(255,179,71,.9)' : 'rgba(232,228,218,.55)';
+    }
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (err) {}
+      unlock();
+      try { if (made[0]) tone(made[0], 440, 0.0); } catch (err) { cnt.err = 'eng ' + String(err).slice(0, 30); }
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        const beep = new Ctx();
+        made.splice(made.indexOf(beep), 1);  // (the beep's own context is not the engine's)
+        tone(beep, 880, 0.4);
+        setTimeout(function () { beep.close(); }, 1200);
+      } catch (err) {}
+      setTimeout(show, 300);
+    });
+    document.body.appendChild(b);
+    setInterval(show, 1000);
+  }
+  if (document.readyState === 'complete') soundButton(); else window.addEventListener('load', soundButton);
+})();
+</script>
+<script>
+(function () {
+  const el = document.documentElement;
+  if (!el.requestFullscreen) return;
+  function add() {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = 'FULL';
+    b.style.cssText = 'position:fixed;bottom:2px;left:50%;transform:translateX(-50%);z-index:30;font:600 10px monospace;color:#e8e4da;background:rgba(11,13,15,.6);' +
+      'border:1.5px solid rgba(232,228,218,.55);border-radius:12px;padding:3px 8px;touch-action:manipulation';
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (document.fullscreenElement) { document.exitFullscreen(); return; }
+      el.requestFullscreen({ navigationUI: 'hide' }).then(function () {
+        try { screen.orientation.lock('landscape'); } catch (err) {}
+      }).catch(function () {});
+    });
+    document.body.appendChild(b);
+  }
+  if (document.readyState === 'complete') add(); else window.addEventListener('load', add);
+})();
+</script>
+		<script src="index.js"></script>
+		<script>
+const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23512404,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>
+
