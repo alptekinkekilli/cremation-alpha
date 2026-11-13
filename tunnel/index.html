@@ -144,7 +144,39 @@ body {
     if (!Orig) continue;
     window[name] = class extends Orig { constructor(...a) { super(...a); made.push(this); } };
   }
+  // v12 (the user, 2026-11-13: "bip seslerini de duymadım"; the page cannot set audioSession, it reads 'auto'): a silent, looping
+  // HTML audio element started inside a gesture makes WebKit treat the page as media playback, so Web Audio no longer obeys the
+  // ringer (silent) switch. A tiny WAV of silence, made here (8 kHz, 8-bit, 0.5 s), plays inline and loops while the page is visible.
+  const html = { el: null, state: 'idle' };
+  function silentWav() {
+    const n = 4000, buf = new Uint8Array(44 + n), v = new DataView(buf.buffer);
+    const w = (o, t) => { for (let i = 0; i < t.length; i++) buf[o + i] = t.charCodeAt(i); };
+    w(0, 'RIFF'); v.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+    v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true);
+    w(36, 'data'); v.setUint32(40, n, true); buf.fill(128, 44);
+    let b = ''; for (let i = 0; i < buf.length; i++) b += String.fromCharCode(buf[i]);
+    return 'data:audio/wav;base64,' + btoa(b);
+  }
+  function htmlAudio() {
+    if (document.hidden || html.state === 'ok' || html.state === 'trying') return;
+    try {
+      if (!html.el) {
+        html.el = document.createElement('audio');
+        html.el.setAttribute('playsinline', ''); html.el.setAttribute('webkit-playsinline', '');
+        html.el.loop = true; html.el.preload = 'auto'; html.el.src = silentWav();
+      }
+      html.state = 'trying';
+      const pr = html.el.play();
+      if (pr && pr.then) pr.then(function () { html.state = 'ok'; }, function () { html.state = 'fail'; });
+      else html.state = 'ok';
+    } catch (e) { html.state = 'fail'; }
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (!html.el) return;
+    if (document.hidden) { html.el.pause(); html.state = 'idle'; }
+  });
   function unlock() {
+    htmlAudio();
     for (const ctx of made) {
       if (ctx.state === 'running') continue;
       try {
@@ -186,20 +218,20 @@ body {
   }
 
   // The sound button (touch screens only): a DOM button outside the canvas, so its tap is a plain in-frame gesture. v11: it sits in the
-  // top strip left of the radar (v10 covered LIE), and a tap plays TWO tones: a LOW one on the ENGINE's own context, then a HIGH one on a
-  // fresh context 0.4 s later. Low+high = the engine context sounds, Godot's graph is the fault; high only = the engine context is deaf.
+  // top strip left of the radar (v10 covered LIE), and a tap plays TWO tones (v12 order): a HIGH one at once on a fresh context, then a LOW one
+  // on the ENGINE's own context 0.5 s later. High+low = the engine context sounds, Godot's graph is the fault; high only = the engine context is deaf.
   function soundButton() {
     if (!('ontouchstart' in window) && !(navigator.maxTouchPoints > 0)) return;
     const b = document.createElement('button');
     b.type = 'button';
     b.textContent = 'TAP FOR SOUND';
-    b.style.cssText = 'position:fixed;top:6px;right:150px;z-index:30;font:600 9px monospace;letter-spacing:.04em;color:#e8e4da;' +
+    b.style.cssText = 'position:fixed;top:6px;right:150px;z-index:30;font:600 10px monospace;letter-spacing:.04em;color:#e8e4da;' +
       'background:rgba(11,13,15,.6);border:1.5px solid rgba(232,228,218,.55);border-radius:12px;padding:3px 8px;touch-action:manipulation;' +
       'max-width:200px;white-space:normal;text-align:left';
     function show() {
       const ctx = made[0];
       const st = ctx ? ctx.state : 'none';
-      b.textContent = 'SND ' + st + ' ' + (ctx ? ctx.sampleRate : '-') + ' src' + cnt.src + ' wk' + cnt.wk +
+      b.textContent = 'SOUND ▶ ' + st + ' html-' + html.state + ' ' + (ctx ? ctx.sampleRate : '-') + ' src' + cnt.src + ' wk' + cnt.wk +
         (navigator.audioSession ? ' ' + navigator.audioSession.type : '') + (cnt.err ? ' ERR ' + cnt.err : '');
       b.style.borderColor = st === 'running' ? 'rgba(255,179,71,.9)' : 'rgba(232,228,218,.55)';
     }
@@ -207,14 +239,14 @@ body {
       e.stopPropagation();
       try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (err) {}
       unlock();
-      try { if (made[0]) tone(made[0], 440, 0.0); } catch (err) { cnt.err = 'eng ' + String(err).slice(0, 30); }
       try {
         const Ctx = window.AudioContext || window.webkitAudioContext;
         const beep = new Ctx();
         made.splice(made.indexOf(beep), 1);  // (the beep's own context is not the engine's)
-        tone(beep, 880, 0.4);
-        setTimeout(function () { beep.close(); }, 1200);
+        tone(beep, 880, 0.0);
+        setTimeout(function () { beep.close(); }, 1500);
       } catch (err) {}
+      try { if (made[0]) tone(made[0], 440, 0.5); } catch (err) { cnt.err = 'eng ' + String(err).slice(0, 30); }
       setTimeout(show, 300);
     });
     document.body.appendChild(b);
@@ -237,7 +269,7 @@ body {
       e.stopPropagation();
       if (document.fullscreenElement) { document.exitFullscreen(); return; }
       el.requestFullscreen({ navigationUI: 'hide' }).then(function () {
-        try { screen.orientation.lock('landscape'); } catch (err) {}
+        try { const lk = screen.orientation.lock('landscape'); if (lk && lk.catch) lk.catch(function () {}); } catch (err) {}
       }).catch(function () {});
     });
     document.body.appendChild(b);
