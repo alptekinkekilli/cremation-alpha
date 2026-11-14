@@ -117,7 +117,7 @@ body {
 		<script>
 (function () {
   const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
-  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 5484565};
+  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 5490888};
   // the title screen's progress bar (tools/release/web_menu.js) reads these: the parts' bytes read so far and in all
   window.__loadDone = 0;
   window.__loadTotal = Object.values(SIZES).reduce(function (a, b) { return a + b; }, 0);
@@ -494,10 +494,11 @@ body {
 </script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":28974904,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":28980848,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 window.__audioMode = 'stream';
 if (/[?&]ses=sample\b/.test(location.search)) { window.__audioMode = 'sample'; }
 else { GODOT_CONFIG.args.push('--audio=stream'); }
+if (/[?&]perf=1\b/.test(location.search)) { GODOT_CONFIG.args.push('--perf-hud'); }
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
