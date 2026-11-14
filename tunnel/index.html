@@ -117,7 +117,7 @@ body {
 		<script>
 (function () {
   const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
-  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 5497954};
+  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 5497975};
   // the title screen's progress bar (tools/release/web_menu.js) reads these: the parts' bytes read so far and in all
   window.__loadDone = 0;
   window.__loadTotal = Object.values(SIZES).reduce(function (a, b) { return a + b; }, 0);
