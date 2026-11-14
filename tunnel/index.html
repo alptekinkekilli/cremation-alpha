@@ -117,7 +117,7 @@ body {
 		<script>
 (function () {
   const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
-  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 5032911};
+  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 5291171};
   // the title screen's progress bar (tools/release/web_menu.js) reads these: the parts' bytes read so far and in all
   window.__loadDone = 0;
   window.__loadTotal = Object.values(SIZES).reduce(function (a, b) { return a + b; }, 0);
@@ -350,7 +350,7 @@ body {
     'filter:drop-shadow(0 0 22px rgba(8,9,11,.95)) drop-shadow(0 2px 4px rgba(0,0,0,.8))');
   logo.src = 'title/logo.png'; logo.alt = 'CREMATION: OUTRUN THE DAWN'; logo.width = 960; logo.height = 291;
   const line = el('div', 'font:500 clamp(11px,1.8vw,13px) monospace;letter-spacing:.06em;max-width:520px;margin:2px 0 6px;color:' + C.cream + ';text-shadow:0 1px 3px #000',
-    "THE TUNNELS: THE MINERS' FAMILIES ARE TRAPPED BELOW. FREE THEM AND CLIMB OUT BEFORE DUSK ENDS.");
+    "THE TUNNELS: THE MINERS' FAMILIES ARE TRAPPED BELOW. FREE THEM AND CLIMB OUT. THE LONGER YOU STAY, THE FASTER THEY HUNT.");  // q715 `hizlanirlar` (2026-11-14): dusk is no deadline
   const status = el('div', 'font:600 12px monospace;letter-spacing:.1em;margin:4px;color:' + C.cream, 'LOADING');
   const track = el('div', 'width:min(320px,70vw);height:6px;margin:2px auto 6px;border:1px solid ' + C.dim + ';border-radius:4px;overflow:hidden;background:rgba(8,9,11,.6)');
   const fill = el('div', 'height:100%;width:0;background:' + C.amber + ';transition:width .25s linear');
@@ -494,7 +494,7 @@ body {
 </script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":28138340,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":28764716,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 window.__audioMode = 'stream';
 if (/[?&]ses=sample\b/.test(location.search)) { window.__audioMode = 'sample'; }
 else { GODOT_CONFIG.args.push('--audio=stream'); }
