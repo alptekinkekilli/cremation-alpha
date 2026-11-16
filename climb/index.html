@@ -117,7 +117,7 @@ body {
 		<script>
 (function () {
   const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
-  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 1494131};
+  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 1499514};
   // the title screen's progress bar (tools/release/web_menu.js) reads these: the parts' bytes read so far and in all
   window.__loadDone = 0;
   window.__loadTotal = Object.values(SIZES).reduce(function (a, b) { return a + b; }, 0);
@@ -322,7 +322,7 @@ body {
     climb: {
       line: 'THE CLIMB: THE SQUAD MUST REACH THE LEDGE BEFORE THE SUNLINE. READ THE ROCK, PICK THE HOLD, SET PITONS.',
       pc: [['W A S D', 'climb: the hold in that direction'], ['SPACE', 'piton'], ['R', 'a new crag']],
-      phone: [['STICK', 'climb: the hold in that direction'], ['PITON', 'piton'], ['MENU > RESTART', 'a new crag']]}};
+      phone: [['STICK', 'climb: the hold in that direction (the lit arrow)'], ['TAP THE RING', 'MOVE / LOOK (the stick turns the camera)'], ['PITON', 'piton'], ['MENU > RESTART', 'a new crag']]}};
   const PC = STAGES[STAGE].pc;
   const PHONE = STAGES[STAGE].phone;
   let ready = false, started = false, mode = 'title', panel = '';
@@ -503,7 +503,7 @@ body {
 </script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":["--"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23814748,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23822892,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 window.__audioMode = 'stream';
 if (/[?&]ses=sample\b/.test(location.search)) { window.__audioMode = 'sample'; }
 else { GODOT_CONFIG.args.push('--audio=stream'); }
