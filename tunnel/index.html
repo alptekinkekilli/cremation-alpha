@@ -116,8 +116,8 @@ body {
 
 		<script>
 (function () {
-  const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
-  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 6205402};
+  const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm", "index.pck.gz.part2.wasm"]};
+  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 14000000, "index.pck.gz.part2.wasm": 1120492};
   // the title screen's progress bar (tools/release/web_menu.js) reads these: the parts' bytes read so far and in all
   window.__loadDone = 0;
   window.__loadTotal = Object.values(SIZES).reduce(function (a, b) { return a + b; }, 0);
@@ -298,6 +298,7 @@ body {
   }
 })();
 </script>
+<script>window.CREMATION_STAGE = "tunnel";</script>
 <script>
 // The web page's menu (the user's q634 `html_menu_web` of 2026-11-12: title, the stage's line, START, SETTINGS, CONTROLS, the engine
 // loading behind; and their order of 2026-11-13: "yeniden başlatma menüsü yok bir de her bölümde başla diye bir buton olması lazım. bu
@@ -309,13 +310,21 @@ body {
 // no sound before a tap, so the loop starts on the first tap on the title screen and fades out on START; the pause menu has none of it.
 (function () {
   const C = { cream: '#e8e4da', amber: '#ffb347', dim: 'rgba(232,228,218,.55)', bg: 'rgba(8,9,11,.93)' };
-  const PC = [
-    ['CLICK', 'walk / fire'], ['SHIFT', 'fire, steps back'], ['ALT', 'back off and fire'], ['SPACE', 'weapon'],
-    ['RIGHT', 'use it'], ['C', 'lie (the Wizard)'], ['TAB', 'leader'], ['X', 'medic'], ['E', 'hold to free a group'],
-    ['ENTER', 'climb out'], ['R', 'again']];
-  const PHONE = [
-    ['STICK', 'move; tap it: AIM / MOVE'], ['FIRE', 'fire'], ['WPN', 'weapon'], ['USE', 'use it'], ['LIE', 'lie (the Wizard)'],
-    ['LEAD', 'leader'], ['MED', 'medic'], ['OUT', 'climb out / free']];
+  const STAGE = window.CREMATION_STAGE || 'tunnel';  // written by web_tunnel_pack.py --stage (the climb since 2026-11-15)
+  const STAGES = {
+    tunnel: {
+      line: "THE MINE: THREE FLOORS, A MINER'S FAMILY TRAPPED ON EACH. FREE THEM, BLOW EACH FLOOR'S SEAL WITH A GRENADE, TAKE THE HATCH DOWN, THEN CLIMB OUT. THE LONGER YOU STAY, THE FASTER THEY HUNT.",  // q715 `hizlanirlar` (2026-11-14): dusk is no deadline
+      pc: [['CLICK', 'walk / fire'], ['SHIFT', 'fire, steps back'], ['ALT', 'back off and fire'], ['SPACE', 'weapon'],
+        ['RIGHT', 'use it'], ['C', 'lie (the Wizard)'], ['TAB', 'leader'], ['X', 'medic'], ['E', 'hold to free a group'],
+        ['ENTER', 'down the hatch / climb out'], ['R', 'again']],
+      phone: [['STICK', 'move; tap it: AIM / MOVE'], ['FIRE', 'fire'], ['WPN', 'weapon'], ['USE', 'use it'], ['LIE', 'lie (the Wizard)'],
+        ['LEAD', 'leader'], ['MED', 'medic'], ['FREE', 'free a family'], ['DOWN', 'down the hatch (floor sealed)'], ['OUT', 'climb out'], ['MENU > PLAY AGAIN', 'a new mine']]},
+    climb: {
+      line: 'THE CLIMB: THE SQUAD MUST REACH THE LEDGE BEFORE THE SUNLINE. READ THE ROCK, PICK THE HOLD, SET PITONS.',
+      pc: [['W A S D', 'climb: the hold in that direction'], ['SPACE', 'piton'], ['R', 'a new crag']],
+      phone: [['STICK', 'climb: the hold in that direction (the lit arrow)'], ['TAP THE RING', 'MOVE / LOOK (the stick turns the camera)'], ['PITON', 'piton'], ['MENU > RESTART', 'a new crag']]}};
+  const PC = STAGES[STAGE].pc;
+  const PHONE = STAGES[STAGE].phone;
   let ready = false, started = false, mode = 'title', panel = '';
   let level = 1.0;  // (0 dB: the mix as measured; the slider moves it)
   try { const v = parseFloat(localStorage.getItem('cremation.volume')); if (v >= 0 && v <= 1) level = v; } catch (e) {}
@@ -350,7 +359,7 @@ body {
     'filter:drop-shadow(0 0 22px rgba(8,9,11,.95)) drop-shadow(0 2px 4px rgba(0,0,0,.8))');
   logo.src = 'title/logo.png'; logo.alt = 'CREMATION: OUTRUN THE DAWN'; logo.width = 960; logo.height = 291;
   const line = el('div', 'font:500 clamp(11px,1.8vw,13px) monospace;letter-spacing:.06em;max-width:520px;margin:2px 0 6px;color:' + C.cream + ';text-shadow:0 1px 3px #000',
-    "THE TUNNELS: THE MINERS' FAMILIES ARE TRAPPED BELOW. FREE THEM AND CLIMB OUT. THE LONGER YOU STAY, THE FASTER THEY HUNT.");  // q715 `hizlanirlar` (2026-11-14): dusk is no deadline
+    STAGES[STAGE].line);
   const status = el('div', 'font:600 12px monospace;letter-spacing:.1em;margin:4px;color:' + C.cream, 'LOADING');
   const track = el('div', 'width:min(320px,70vw);height:6px;margin:2px auto 6px;border:1px solid ' + C.dim + ';border-radius:4px;overflow:hidden;background:rgba(8,9,11,.6)');
   const fill = el('div', 'height:100%;width:0;background:' + C.amber + ';transition:width .25s linear');
@@ -408,7 +417,7 @@ body {
   function firstTap() { if (mode === 'title' && !started) { musicContext(); startLoop(); } }
   for (const t of ['touchend', 'click', 'keydown']) wrap.addEventListener(t, firstTap, true);
 
-  const menuBtn = el('button', 'position:fixed;top:6px;left:230px;z-index:30;display:none;font:700 11px monospace;letter-spacing:.1em;color:' +
+  const menuBtn = el('button', 'position:fixed;top:6px;' + (STAGE === 'climb' ? 'right:12px' : 'left:230px') + ';z-index:30;display:none;font:700 11px monospace;letter-spacing:.1em;color:' +
     C.cream + ';background:rgba(11,13,15,.6);border:1.5px solid ' + C.dim + ';border-radius:12px;padding:4px 10px;touch-action:manipulation', 'MENU');
   menuBtn.type = 'button';
   menuBtn.addEventListener('click', function (e) { e.stopPropagation(); openPause(); });
@@ -440,6 +449,12 @@ body {
       });
       d.append(label, r);
       box.append(d);
+    } else if (panel === 'fullscreen') {
+      const d = el('div', 'font:600 12px monospace;letter-spacing:.08em;line-height:1.8;max-width:min(520px,90vw);margin:0 auto;text-align:left');
+      d.append(el('div', 'color:' + C.amber + ';font-weight:700', 'THIS BROWSER CANNOT GO FULL SCREEN. ON AN IPHONE:'));
+      for (const s of ['1. SAFARI: TAP SHARE (THE SQUARE WITH THE ARROW UP)', '2. TAP ADD TO HOME SCREEN, THEN ADD',
+                       '3. OPEN THE GAME FROM ITS NEW ICON (NO BARS), PHONE SIDEWAYS']) d.append(el('div', 'color:' + C.cream, s));
+      box.append(d);
     }
   }
   function toggle(p) { panel = panel === p ? '' : p; fillBox(); }
@@ -457,11 +472,18 @@ body {
       const s = button(ready ? 'START' : 'LOADING', start, true);
       s.disabled = !ready; s.style.opacity = ready ? '1' : '.5';
       row.append(s);
+    } else if (mode === 'end') {
+      row.append(button('PLAY AGAIN', restart, true));  // q866 `son_karti`: the mine is over (the climb-out film has played); a phone has no R
     } else {
       row.append(button('RESUME', resume, true), button('RESTART', restart));
     }
     row.append(button('SETTINGS', function () { toggle('settings'); }), button('CONTROLS', function () { toggle('controls'); }));
+    // q852 `talimat_goster` (2026-11-16): where the page has the Fullscreen API (Android Chrome, desktop) the button goes full screen;
+    // iPhone Safari has none for pages, so there the button opens the steps of Add to Home Screen (the page then opens bar-less, landscape).
+    // Opened from the home-screen icon already, the button is not drawn.
+    const homeApp = navigator.standalone === true || window.matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches;
     if (document.documentElement.requestFullscreen) row.append(button('FULL SCREEN', fullscreen));
+    else if (!homeApp) row.append(button('FULL SCREEN', function () { toggle('fullscreen'); }));
     loadBox.style.display = mode === 'title' && !ready ? 'block' : 'none';
     bg.style.display = mode === 'title' ? 'block' : 'none';
     line.style.display = mode === 'title' ? 'block' : 'none';
@@ -477,6 +499,9 @@ body {
   function resume() { call('pause', false); hide(); }
   function restart() { call('restart'); hide(); }
   function openPause() { if (!started) return; call('pause', true); mode = 'pause'; panel = ''; wrap.style.display = 'flex'; menuBtn.style.display = 'none'; render(); }
+  // q866 `son_karti` (tunnels.gd d8348413): after the climb-out film the game calls this when the yard is not in the build; the page shows
+  // its menu with PLAY AGAIN (the gate's restart: the whole mine from floor 1). The game is not paused: its end strip stays under the menu.
+  window.__cremationEnd = function () { if (!started) return; mode = 'end'; panel = ''; wrap.style.display = 'flex'; menuBtn.style.display = 'none'; render(); };
 
   window.__cremationReady = function () { ready = true; render(); };
   document.addEventListener('visibilitychange', function () { if (document.hidden && started && wrap.style.display === 'none') openPause(); });
@@ -494,11 +519,15 @@ body {
 </script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":["--", "--map=t1"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":29778732,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--", "--map=mine"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":38976816,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 window.__audioMode = 'stream';
 if (/[?&]ses=sample\b/.test(location.search)) { window.__audioMode = 'sample'; }
 else { GODOT_CONFIG.args.push('--audio=stream'); }
 if (/[?&]perf=1\b/.test(location.search)) { GODOT_CONFIG.args.push('--perf-hud'); }
+if (/-next\//.test(location.pathname)) {
+  var fm = /[?&]floor=([123])\b/.exec(location.search); if (fm) { GODOT_CONFIG.args.push('--floor=' + fm[1]); }
+  var em = /[?&]exitfilm=(exit_(?:a|b|zero)_(?:sealed|open))\b/.exec(location.search); if (em) { GODOT_CONFIG.args.push('--exit-film=' + em[1]); }
+}
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
