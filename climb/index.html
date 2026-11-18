@@ -117,7 +117,7 @@ body {
 		<script>
 (function () {
   const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
-  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 1557173};
+  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 3217374};
   // the title screen's progress bar (tools/release/web_menu.js) reads these: the parts' bytes read so far and in all
   window.__loadDone = 0;
   window.__loadTotal = Object.values(SIZES).reduce(function (a, b) { return a + b; }, 0);
@@ -313,12 +313,12 @@ body {
   const STAGE = window.CREMATION_STAGE || 'tunnel';  // written by web_tunnel_pack.py --stage (the climb since 2026-11-15)
   const STAGES = {
     tunnel: {
-      line: "THE TUNNELS: THE MINERS' FAMILIES ARE TRAPPED BELOW. FREE THEM AND CLIMB OUT. THE LONGER YOU STAY, THE FASTER THEY HUNT.",  // q715 `hizlanirlar` (2026-11-14): dusk is no deadline
+      line: "THE MINE: THREE FLOORS, A MINER'S FAMILY TRAPPED ON EACH. FREE THEM, BLOW EACH FLOOR'S SEAL WITH A GRENADE, TAKE THE HATCH DOWN, THEN CLIMB OUT. THE LONGER YOU STAY, THE FASTER THEY HUNT.",  // q715 `hizlanirlar` (2026-11-14): dusk is no deadline
       pc: [['CLICK', 'walk / fire'], ['SHIFT', 'fire, steps back'], ['ALT', 'back off and fire'], ['SPACE', 'weapon'],
         ['RIGHT', 'use it'], ['C', 'lie (the Wizard)'], ['TAB', 'leader'], ['X', 'medic'], ['E', 'hold to free a group'],
-        ['ENTER', 'climb out'], ['R', 'again']],
+        ['ENTER', 'down the hatch / climb out'], ['R', 'again']],
       phone: [['STICK', 'move; tap it: AIM / MOVE'], ['FIRE', 'fire'], ['WPN', 'weapon'], ['USE', 'use it'], ['LIE', 'lie (the Wizard)'],
-        ['LEAD', 'leader'], ['MED', 'medic'], ['OUT', 'climb out / free']]},
+        ['LEAD', 'leader'], ['MED', 'medic'], ['FREE', 'free a family'], ['DOWN', 'down the hatch (floor sealed)'], ['OUT', 'climb out'], ['MENU > PLAY AGAIN', 'a new mine']]},
     climb: {
       line: 'THE CLIMB: THE SQUAD MUST REACH THE LEDGE BEFORE THE SUNLINE. READ THE ROCK, PICK THE HOLD, SET PITONS.',
       pc: [['W A S D', 'climb: the hold in that direction'], ['SPACE', 'piton'], ['R', 'a new crag']],
@@ -453,7 +453,7 @@ body {
       const d = el('div', 'font:600 12px monospace;letter-spacing:.08em;line-height:1.8;max-width:min(520px,90vw);margin:0 auto;text-align:left');
       d.append(el('div', 'color:' + C.amber + ';font-weight:700', 'THIS BROWSER CANNOT GO FULL SCREEN. ON AN IPHONE:'));
       for (const s of ['1. SAFARI: TAP SHARE (THE SQUARE WITH THE ARROW UP)', '2. TAP ADD TO HOME SCREEN, THEN ADD',
-                       '3. OPEN THE GAME FROM ITS NEW ICON: NO BARS, LANDSCAPE']) d.append(el('div', 'color:' + C.cream, s));
+                       '3. OPEN THE GAME FROM ITS NEW ICON (NO BARS), PHONE SIDEWAYS']) d.append(el('div', 'color:' + C.cream, s));
       box.append(d);
     }
   }
@@ -472,6 +472,8 @@ body {
       const s = button(ready ? 'START' : 'LOADING', start, true);
       s.disabled = !ready; s.style.opacity = ready ? '1' : '.5';
       row.append(s);
+    } else if (mode === 'end') {
+      row.append(button('PLAY AGAIN', restart, true));  // q866 `son_karti`: the mine is over (the climb-out film has played); a phone has no R
     } else {
       row.append(button('RESUME', resume, true), button('RESTART', restart));
     }
@@ -497,6 +499,9 @@ body {
   function resume() { call('pause', false); hide(); }
   function restart() { call('restart'); hide(); }
   function openPause() { if (!started) return; call('pause', true); mode = 'pause'; panel = ''; wrap.style.display = 'flex'; menuBtn.style.display = 'none'; render(); }
+  // q866 `son_karti` (tunnels.gd d8348413): after the climb-out film the game calls this when the yard is not in the build; the page shows
+  // its menu with PLAY AGAIN (the gate's restart: the whole mine from floor 1). The game is not paused: its end strip stays under the menu.
+  window.__cremationEnd = function () { if (!started) return; mode = 'end'; panel = ''; wrap.style.display = 'flex'; menuBtn.style.display = 'none'; render(); };
 
   window.__cremationReady = function () { ready = true; render(); };
   document.addEventListener('visibilitychange', function () { if (document.hidden && started && wrap.style.display === 'none') openPause(); });
@@ -514,11 +519,15 @@ body {
 </script>
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":["--"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":23898332,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":["--"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":25828144,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 window.__audioMode = 'stream';
 if (/[?&]ses=sample\b/.test(location.search)) { window.__audioMode = 'sample'; }
 else { GODOT_CONFIG.args.push('--audio=stream'); }
 if (/[?&]perf=1\b/.test(location.search)) { GODOT_CONFIG.args.push('--perf-hud'); }
+if (/-next\//.test(location.pathname)) {
+  var fm = /[?&]floor=([123])\b/.exec(location.search); if (fm) { GODOT_CONFIG.args.push('--floor=' + fm[1]); }
+  var em = /[?&]exitfilm=(exit_(?:a|b|zero)_(?:sealed|open))\b/.exec(location.search); if (em) { GODOT_CONFIG.args.push('--exit-film=' + em[1]); }
+}
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
