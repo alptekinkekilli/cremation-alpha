@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+		<title>Cremation - Outrun the Dawn</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: #242424;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-splash.show-image--false {
+	display: none;
+}
+
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+
+#status-progress, #status-notice {
+	display: none;
+}
+
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+		</style>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+
+	</head>
+	<body>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+		<script>
+(function () {
+  const PARTS = {"index.wasm": ["index.wasm.gz.part0.wasm"], "index.pck": ["index.pck.gz.part0.wasm", "index.pck.gz.part1.wasm"]};
+  const SIZES = {"index.wasm.gz.part0.wasm": 10054758, "index.pck.gz.part0.wasm": 14000000, "index.pck.gz.part1.wasm": 3228941};
+  // the title screen's progress bar (tools/release/web_menu.js) reads these: the parts' bytes read so far and in all
+  window.__loadDone = 0;
+  window.__loadTotal = Object.values(SIZES).reduce(function (a, b) { return a + b; }, 0);
+  const realFetch = window.fetch.bind(window);
+  window.fetch = async function (input, init) {
+    const url = typeof input === 'string' ? input : input.url;
+    const key = Object.keys(PARTS).find(k => url.split('?')[0].endsWith(k));
+    if (!key) return realFetch(input, init);
+    const blobs = [];
+    for (const p of PARTS[key]) {
+      const r = await realFetch(p);
+      if (!r.ok) throw new Error('part ' + p + ' ' + r.status);
+      if (!r.body) { blobs.push(await r.blob()); window.__loadDone += SIZES[p] || 0; continue; }
+      const reader = r.body.getReader(), chunks = [];
+      for (;;) {
+        const step = await reader.read();
+        if (step.done) break;
+        chunks.push(step.value);
+        window.__loadDone += step.value.length;
+      }
+      blobs.push(new Blob(chunks));
+    }
+    const stream = new Blob(blobs).stream().pipeThrough(new DecompressionStream('gzip'));
+    const type = key.endsWith('.wasm') ? 'application/wasm' : 'application/octet-stream';
+    return new Response(stream, { status: 200, headers: { 'Content-Type': type } });
+  };
+})();
+</script>
+<script>
+(function () {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+  const made = [];
+  window.__godotAudioContexts = made;
+  for (const name of ['AudioContext', 'webkitAudioContext']) {
+    const Orig = window[name];
+    if (!Orig) continue;
+    window[name] = class extends Orig { constructor(...a) { super(...a); made.push(this); } };
+  }
+  // v12 (the user, 2026-11-13: "bip seslerini de duymadım"; the page cannot set audioSession, it reads 'auto'): a silent, looping
+  // HTML audio element started inside a gesture makes WebKit treat the page as media playback, so Web Audio no longer obeys the
+  // ringer (silent) switch. A tiny WAV of silence, made here (8 kHz, 8-bit, 0.5 s), plays inline and loops while the page is visible.
+  const html = { el: null, state: 'idle' };
+  function silentWav() {
+    const n = 4000, buf = new Uint8Array(44 + n), v = new DataView(buf.buffer);
+    const w = (o, t) => { for (let i = 0; i < t.length; i++) buf[o + i] = t.charCodeAt(i); };
+    w(0, 'RIFF'); v.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+    v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true);
+    w(36, 'data'); v.setUint32(40, n, true); buf.fill(128, 44);
+    let b = ''; for (let i = 0; i < buf.length; i++) b += String.fromCharCode(buf[i]);
+    return 'data:audio/wav;base64,' + btoa(b);
+  }
+  function htmlAudio() {
+    if (document.hidden || html.state === 'ok' || html.state === 'trying') return;
+    try {
+      if (!html.el) {
+        html.el = document.createElement('audio');
+        html.el.setAttribute('playsinline', ''); html.el.setAttribute('webkit-playsinline', '');
+        html.el.loop = true; html.el.preload = 'auto'; html.el.src = silentWav();
+      }
+      html.state = 'trying';
+      const pr = html.el.play();
+      if (pr && pr.then) pr.then(function () { html.state = 'ok'; }, function () { html.state = 'fail'; });
+      else html.state = 'ok';
+    } catch (e) { html.state = 'fail'; }
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (!html.el) return;
+    if (document.hidden) { html.el.pause(); html.state = 'idle'; }
+  });
+  function unlock() {
+    htmlAudio();
+    for (const ctx of made) {
+      if (ctx.state === 'running') continue;
+      try {
+        ctx.resume();
+        const src = ctx.createBufferSource();
+        src.buffer = ctx.createBuffer(1, 1, 22050);
+        src.connect(ctx.destination);
+        src.start(0);
+      } catch (e) {}
+    }
+  }
+  for (const ev of ['touchend', 'pointerup', 'click', 'keydown']) window.addEventListener(ev, unlock, { capture: true, passive: true });
+
+  // v11 counters (the user's fourth phone test of 2026-11-13: beep heard, the game silent, the engine context 'running'): how many
+  // AudioBufferSourceNode.start() calls Godot made (its sample playback), how many AudioWorkletNodes, the last page error.
+  const cnt = { src: 0, wk: 0, err: '' };
+  window.__godotAudioCount = cnt;
+  try {
+    const s0 = AudioBufferSourceNode.prototype.start;
+    AudioBufferSourceNode.prototype.start = function (...a) { cnt.src++; return s0.apply(this, a); };
+  } catch (e) {}
+  if (window.AudioWorkletNode) {
+    const W = window.AudioWorkletNode;
+    window.AudioWorkletNode = class extends W { constructor(...a) { super(...a); cnt.wk++; } };
+  }
+  // v13: which nodes are wired to a destination right now (godotengine/godot#119026: add_bus() at run time left Master off the speakers).
+  const toDst = new Set();
+  const meter = { an: null, buf: null, peak: 0, shown: 0 };
+  setInterval(function () {
+    if (!meter.an) return;
+    meter.an.getFloatTimeDomainData(meter.buf);
+    let m = 0; for (let i = 0; i < meter.buf.length; i++) { const v = Math.abs(meter.buf[i]); if (v > m) m = v; }
+    if (m > meter.peak) meter.peak = m;
+  }, 50);
+  setInterval(function () { meter.shown = meter.peak; meter.peak = 0; }, 1000);
+  cnt.out = function () { return meter.shown > 0 ? Math.round(20 * Math.log10(meter.shown)) + 'dB' : '-inf'; };
+  cnt.dst = function () { let n = 0; for (const x of toDst) if (x.context === made[0]) n++; return n; };
+  try {
+    const c0 = AudioNode.prototype.connect, d0 = AudioNode.prototype.disconnect;
+    AudioNode.prototype.connect = function (dest, ...a) {
+      if (window.AudioDestinationNode && dest instanceof AudioDestinationNode) {
+        toDst.add(this);
+        try {
+          const ctx = this.context;
+          if (ctx === made[0]) {
+            if (!meter.an || meter.an.context !== ctx) { meter.an = ctx.createAnalyser(); meter.an.fftSize = 2048; meter.buf = new Float32Array(2048); }
+            c0.call(this, meter.an);
+          }
+        } catch (e) {}
+      }
+      return c0.call(this, dest, ...a);
+    };
+    AudioNode.prototype.disconnect = function (...a) {
+      if (a.length === 0 || (window.AudioDestinationNode && a[0] instanceof AudioDestinationNode)) toDst.delete(this);
+      return d0.apply(this, a);
+    };
+  } catch (e) {}
+  window.addEventListener('error', function (e) { cnt.err = String(e.message || '').slice(0, 40); });
+  window.addEventListener('unhandledrejection', function (e) { cnt.err = String(e.reason || '').slice(0, 40); });
+
+  function tone(ctx, freq, at) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const t = ctx.currentTime + at;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.15, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
+    osc.frequency.value = freq;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(t); osc.stop(t + 0.3);
+  }
+
+  // The sound button (touch screens only): a DOM button outside the canvas, so its tap is a plain in-frame gesture. v11: it sits in the
+  // top strip left of the radar (v10 covered LIE), and a tap plays TWO tones (v12 order): a HIGH one at once on a fresh context, then a LOW one
+  // on the ENGINE's own context 0.5 s later. High+low = the engine context sounds, Godot's graph is the fault; high only = the engine context is deaf.
+  function soundButton() {
+    if (!('ontouchstart' in window) && !(navigator.maxTouchPoints > 0)) return;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = 'TAP FOR SOUND';
+    b.style.cssText = 'position:fixed;top:6px;right:150px;z-index:30;font:600 10px monospace;letter-spacing:.04em;color:#e8e4da;' +
+      'background:rgba(11,13,15,.6);border:1.5px solid rgba(232,228,218,.55);border-radius:12px;padding:3px 8px;touch-action:manipulation;' +
+      'max-width:200px;white-space:normal;text-align:left';
+    function show() {
+      const ctx = made[0];
+      const st = ctx ? ctx.state : 'none';
+      b.textContent = 'SOUND ▶ ' + (window.__audioMode || 'sample') + ' ' + st + ' html-' + html.state + ' ' + (ctx ? ctx.sampleRate : '-') + ' src' + cnt.src + ' wk' + cnt.wk + ' dst' + cnt.dst() + ' out' + cnt.out() +
+        (navigator.audioSession ? ' ' + navigator.audioSession.type : '') + (cnt.err ? ' ERR ' + cnt.err : '');
+      b.style.borderColor = st === 'running' ? 'rgba(255,179,71,.9)' : 'rgba(232,228,218,.55)';
+    }
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (err) {}
+      unlock();
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        const beep = new Ctx();
+        made.splice(made.indexOf(beep), 1);  // (the beep's own context is not the engine's)
+        tone(beep, 880, 0.0);
+        setTimeout(function () { beep.close(); }, 1500);
+      } catch (err) {}
+      try { if (made[0]) tone(made[0], 440, 0.5); } catch (err) { cnt.err = 'eng ' + String(err).slice(0, 30); }
+      setTimeout(show, 300);
+    });
+    document.body.appendChild(b);
+    setInterval(show, 1000);
+  }
+})();
+</script>
+<script>window.CREMATION_STAGE = "climb";</script>
+<script>
+// The web page's menu (the user's q634 `html_menu_web` of 2026-11-12: title, the stage's line, START, SETTINGS, CONTROLS, the engine
+// loading behind; and their order of 2026-11-13: "yeniden başlatma menüsü yok bir de her bölümde başla diye bir buton olması lazım. bu
+// sesin de tıklamayla önce gelmesini sağlar"). The game waits paused (scripts/ui/web_gate.gd) until START; START is also the first tap a
+// browser needs before it plays sound. In the game a MENU button pauses it: RESUME, RESTART, SETTINGS, CONTROLS, FULL SCREEN.
+// Injected by tools/release/web_tunnel_pack.py before index.js. Words on the screen are English capitals (docs/ui-standard.md).
+// The title screen (the user's order of 2026-11-13): the logo, the landing page's first hero slide behind it (the poster, the 6.04 s
+// clip on top once it plays), a loading bar, and a 6.04 s loop of the run music (title/loop.wav, cut by the pack script). A browser plays
+// no sound before a tap, so the loop starts on the first tap on the title screen and fades out on START; the pause menu has none of it.
+(function () {
+  const C = { cream: '#e8e4da', amber: '#ffb347', dim: 'rgba(232,228,218,.55)', bg: 'rgba(8,9,11,.93)' };
+  const STAGE = window.CREMATION_STAGE || 'tunnel';  // written by web_tunnel_pack.py --stage (the climb since 2026-11-15)
+  const STAGES = {
+    tunnel: {
+      line: "THE MINE: THREE FLOORS, A MINER'S FAMILY TRAPPED ON EACH. FREE THEM, BLOW EACH FLOOR'S SEAL WITH A GRENADE, TAKE THE HATCH DOWN, THEN CLIMB OUT. THE LONGER YOU STAY, THE FASTER THEY HUNT.",  // q715 `hizlanirlar` (2026-11-14): dusk is no deadline
+      pc: [['CLICK', 'walk / fire'], ['SHIFT', 'fire, steps back'], ['ALT', 'back off and fire'], ['SPACE', 'weapon'],
+        ['RIGHT', 'use it'], ['C', 'lie (the Wizard)'], ['TAB', 'leader'], ['X', 'medic'], ['E', 'hold to free a group'],
+        ['ENTER', 'down the hatch / climb out'], ['R', 'again']],
+      phone: [['STICK', 'move; tap it: AIM / MOVE'], ['FIRE', 'fire'], ['WPN', 'weapon'], ['USE', 'use it'], ['LIE', 'lie (the Wizard)'],
+        ['LEAD', 'leader'], ['MED', 'medic'], ['FREE', 'free a family'], ['DOWN', 'down the hatch (floor sealed)'], ['OUT', 'climb out'], ['MENU > PLAY AGAIN', 'a new mine']]},
+    climb: {
+      line: 'THE CLIMB: THE SQUAD MUST REACH THE LEDGE BEFORE THE SUNLINE. READ THE ROCK, PICK THE HOLD, SET PITONS.',
+      pc: [['W A S D', 'climb: the hold in that direction'], ['SPACE', 'piton'], ['R', 'a new crag']],
+      phone: [['STICK', 'climb: the hold in that direction (the lit arrow)'], ['TAP THE RING', 'MOVE / LOOK (the stick turns the camera)'], ['PITON', 'piton'], ['MENU > RESTART', 'a new crag']]}};
+  const PC = STAGES[STAGE].pc;
+  const PHONE = STAGES[STAGE].phone;
+  let ready = false, started = false, mode = 'title', panel = '';
+  let level = 1.0;  // (0 dB: the mix as measured; the slider moves it)
+  try { const v = parseFloat(localStorage.getItem('cremation.volume')); if (v >= 0 && v <= 1) level = v; } catch (e) {}
+
+  function el(tag, css, text) { const e = document.createElement(tag); if (css) e.style.cssText = css; if (text != null) e.textContent = text; return e; }
+  const btnCss = 'font:700 15px monospace;letter-spacing:.12em;color:' + C.cream + ';background:rgba(11,13,15,.7);border:1.5px solid ' +
+    C.dim + ';border-radius:10px;padding:10px 18px;margin:5px;min-width:150px;touch-action:manipulation;cursor:pointer';
+  function button(text, on, strong) {
+    const b = el('button', btnCss + (strong ? ';border-color:' + C.amber + ';color:' + C.amber + ';font-size:18px;min-width:200px' : ''), text);
+    b.type = 'button';
+    b.addEventListener('click', function (e) { e.stopPropagation(); on(); });
+    return b;
+  }
+  function api() { return window.cremation || null; }
+  function call(name, arg) { const a = api(); if (a && a[name]) { try { a[name](arg); } catch (e) {} } }
+
+  const wrap = el('div', 'position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+    'background:' + C.bg + ';color:' + C.cream + ';font-family:monospace;text-align:center;padding:16px;box-sizing:border-box;overflow:auto');
+  // the hero slide: the poster underneath, the clip shown only once it plays (a phone that paints a video black still shows the poster)
+  const bg = el('div', 'position:absolute;inset:0;z-index:-1;overflow:hidden;background:#000');
+  const fit = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:64% 50%';
+  const poster = el('img', fit + ';opacity:.82');
+  poster.src = 'title/hero.jpg'; poster.alt = '';
+  const clip = el('video', fit + ';opacity:0;transition:opacity .5s ease');
+  clip.muted = true; clip.loop = true; clip.autoplay = true; clip.playsInline = true;
+  clip.setAttribute('muted', ''); clip.setAttribute('playsinline', ''); clip.preload = 'auto'; clip.poster = 'title/hero.jpg';
+  clip.src = 'title/hero.mp4';
+  clip.addEventListener('timeupdate', function () { if (clip.currentTime > 0.15 && !clip.paused) clip.style.opacity = '.82'; });
+  const shade = el('div', 'position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,9,11,.94) 8%,rgba(8,9,11,.35) 55%,rgba(8,9,11,.55))');
+  bg.append(poster, clip, shade);
+  const logo = el('img', 'display:block;width:min(540px,82vw);max-height:26vh;height:auto;object-fit:contain;margin:0 auto 4px;' +
+    'filter:drop-shadow(0 0 22px rgba(8,9,11,.95)) drop-shadow(0 2px 4px rgba(0,0,0,.8))');
+  logo.src = 'title/logo.png'; logo.alt = 'CREMATION: OUTRUN THE DAWN'; logo.width = 960; logo.height = 291;
+  const line = el('div', 'font:500 clamp(11px,1.8vw,13px) monospace;letter-spacing:.06em;max-width:520px;margin:2px 0 6px;color:' + C.cream + ';text-shadow:0 1px 3px #000',
+    STAGES[STAGE].line);
+  const status = el('div', 'font:600 12px monospace;letter-spacing:.1em;margin:4px;color:' + C.cream, 'LOADING');
+  const track = el('div', 'width:min(320px,70vw);height:6px;margin:2px auto 6px;border:1px solid ' + C.dim + ';border-radius:4px;overflow:hidden;background:rgba(8,9,11,.6)');
+  const fill = el('div', 'height:100%;width:0;background:' + C.amber + ';transition:width .25s linear');
+  track.append(fill);
+  const loadBox = el('div', '');
+  loadBox.append(status, track);
+  const row = el('div', 'display:flex;flex-wrap:wrap;justify-content:center;align-items:center');
+  const box = el('div', 'margin-top:8px;max-width:560px;width:100%');
+  wrap.append(bg, logo, line, loadBox, row, box);
+
+  // the title loop: decoded once, played as a looping Web Audio buffer (no encoder gap at the seam), -8 dB under the SOUND slider
+  const LOOP_GAIN = Math.pow(10, -8 / 20);
+  let music = null, musicData = null;
+  try { fetch('title/loop.wav').then(function (r) { return r.ok ? r.arrayBuffer() : null; }).then(function (d) { musicData = d; startLoop(); }).catch(function () {}); } catch (e) {}
+  // the context is made and resumed INSIDE the tap (a context made later, from the fetch, would stay suspended until a second tap)
+  function musicContext() {
+    if (music || mode !== 'title' || started) return;
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    const ctx = new Ctx(), gain = ctx.createGain();
+    gain.gain.value = 0;
+    gain.connect(ctx.destination);
+    music = { ctx: ctx, gain: gain, src: null };
+    if (ctx.state !== 'running') ctx.resume().catch(function () {});
+  }
+  function startLoop() {
+    if (!music || music.src || !musicData) return;
+    const m = music, data = musicData;
+    musicData = null;
+    m.src = true;  // (taken: one decode)
+    m.ctx.decodeAudioData(data, function (buf) {
+      if (music !== m) return;
+      const src = m.ctx.createBufferSource();
+      src.buffer = buf; src.loop = true; src.connect(m.gain); src.start();
+      m.src = src;
+      m.gain.gain.setValueAtTime(0, m.ctx.currentTime);
+      m.gain.gain.linearRampToValueAtTime(LOOP_GAIN * level, m.ctx.currentTime + 1.5);
+    }, function () {});
+  }
+  // a hidden page (another tab, a locked phone) silences the title loop; it comes back on the title only
+  document.addEventListener('visibilitychange', function () {
+    if (!music) return;
+    try { if (document.hidden) music.ctx.suspend(); else if (mode === 'title' && !started) music.ctx.resume(); } catch (e) {}
+  });
+  function musicLevel() { if (music) music.gain.gain.setTargetAtTime(LOOP_GAIN * level, music.ctx.currentTime, 0.05); }
+  function stopMusic() {
+    if (!music) return;
+    const m = music; music = null;
+    // the pack's iOS unlock resumes every context it recorded on each tap: a closed one must leave its list
+    const made = window.__godotAudioContexts, at = made ? made.indexOf(m.ctx) : -1;
+    if (at >= 0) made.splice(at, 1);
+    try { m.gain.gain.cancelScheduledValues(m.ctx.currentTime); m.gain.gain.setTargetAtTime(0, m.ctx.currentTime, 0.12); } catch (e) {}
+    setTimeout(function () { try { if (m.src && m.src.stop) m.src.stop(); m.ctx.close(); } catch (e) {} }, 700);
+  }
+  function firstTap() { if (mode === 'title' && !started) { musicContext(); startLoop(); } }
+  for (const t of ['touchend', 'click', 'keydown']) wrap.addEventListener(t, firstTap, true);
+
+  const menuBtn = el('button', 'position:fixed;top:6px;' + (STAGE === 'climb' ? 'right:12px' : 'left:230px') + ';z-index:30;display:none;font:700 11px monospace;letter-spacing:.1em;color:' +
+    C.cream + ';background:rgba(11,13,15,.6);border:1.5px solid ' + C.dim + ';border-radius:12px;padding:4px 10px;touch-action:manipulation', 'MENU');
+  menuBtn.type = 'button';
+  menuBtn.addEventListener('click', function (e) { e.stopPropagation(); openPause(); });
+
+  function table(rows, head) {
+    const t = el('div', 'flex:1;min-width:220px;margin:6px;text-align:left');
+    t.append(el('div', 'font:700 12px monospace;letter-spacing:.12em;color:' + C.amber + ';margin-bottom:4px', head));
+    for (const r of rows) {
+      const d = el('div', 'font:500 12px monospace;line-height:1.6');
+      d.append(el('span', 'display:inline-block;min-width:64px;color:' + C.cream + ';font-weight:700', r[0]), el('span', 'color:' + C.dim, r[1]));
+      t.append(d);
+    }
+    return t;
+  }
+  function fillBox() {
+    box.textContent = '';
+    if (panel === 'controls') {
+      const d = el('div', 'display:flex;flex-wrap:wrap;justify-content:center');
+      d.append(table(PC, 'PC'), table(PHONE, 'PHONE'));
+      box.append(d);
+    } else if (panel === 'settings') {
+      const d = el('div', 'font:600 13px monospace;letter-spacing:.1em');
+      const label = el('span', 'margin-right:10px', 'SOUND ' + Math.round(level * 100));
+      const r = el('input', 'vertical-align:middle;width:200px');
+      r.type = 'range'; r.min = '0'; r.max = '100'; r.value = String(Math.round(level * 100));
+      r.addEventListener('input', function () {
+        level = r.value / 100; label.textContent = 'SOUND ' + r.value; call('volume', level); musicLevel();
+        try { localStorage.setItem('cremation.volume', String(level)); } catch (e) {}
+      });
+      d.append(label, r);
+      box.append(d);
+    } else if (panel === 'fullscreen') {
+      const d = el('div', 'font:600 12px monospace;letter-spacing:.08em;line-height:1.8;max-width:min(520px,90vw);margin:0 auto;text-align:left');
+      d.append(el('div', 'color:' + C.amber + ';font-weight:700', 'THIS BROWSER CANNOT GO FULL SCREEN. ON AN IPHONE:'));
+      for (const s of ['1. SAFARI: TAP SHARE (THE SQUARE WITH THE ARROW UP)', '2. TAP ADD TO HOME SCREEN, THEN ADD',
+                       '3. OPEN THE GAME FROM ITS NEW ICON (NO BARS), PHONE SIDEWAYS']) d.append(el('div', 'color:' + C.cream, s));
+      box.append(d);
+    }
+  }
+  function toggle(p) { panel = panel === p ? '' : p; fillBox(); }
+  function fullscreen() {
+    const de = document.documentElement;
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    if (!de.requestFullscreen) return;
+    de.requestFullscreen({ navigationUI: 'hide' }).then(function () {
+      try { const lk = screen.orientation.lock('landscape'); if (lk && lk.catch) lk.catch(function () {}); } catch (e) {}
+    }).catch(function () {});
+  }
+  function render() {
+    row.textContent = '';
+    if (mode === 'title') {
+      const s = button(ready ? 'START' : 'LOADING', start, true);
+      s.disabled = !ready; s.style.opacity = ready ? '1' : '.5';
+      row.append(s);
+    } else if (mode === 'end') {
+      row.append(button('PLAY AGAIN', restart, true));  // q866 `son_karti`: the mine is over (the climb-out film has played); a phone has no R
+    } else {
+      row.append(button('RESUME', resume, true), button('RESTART', restart));
+    }
+    row.append(button('SETTINGS', function () { toggle('settings'); }), button('CONTROLS', function () { toggle('controls'); }));
+    // q852 `talimat_goster` (2026-11-16): where the page has the Fullscreen API (Android Chrome, desktop) the button goes full screen;
+    // iPhone Safari has none for pages, so there the button opens the steps of Add to Home Screen (the page then opens bar-less, landscape).
+    // Opened from the home-screen icon already, the button is not drawn.
+    const homeApp = navigator.standalone === true || window.matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches;
+    if (document.documentElement.requestFullscreen) row.append(button('FULL SCREEN', fullscreen));
+    else if (!homeApp) row.append(button('FULL SCREEN', function () { toggle('fullscreen'); }));
+    loadBox.style.display = mode === 'title' && !ready ? 'block' : 'none';
+    bg.style.display = mode === 'title' ? 'block' : 'none';
+    line.style.display = mode === 'title' ? 'block' : 'none';
+    fillBox();
+  }
+  function hide() { wrap.style.display = 'none'; menuBtn.style.display = 'block'; const c = document.getElementById('canvas'); if (c) c.focus(); }
+  function start() {
+    if (!ready) return;
+    started = true; stopMusic();
+    try { clip.pause(); clip.removeAttribute('src'); clip.load(); } catch (e) {}  // no clip decoding behind the game
+    call('volume', level); call('start'); hide();
+  }
+  function resume() { call('pause', false); hide(); }
+  function restart() { call('restart'); hide(); }
+  function openPause() { if (!started) return; call('pause', true); mode = 'pause'; panel = ''; wrap.style.display = 'flex'; menuBtn.style.display = 'none'; render(); }
+  // q866 `son_karti` (tunnels.gd d8348413): after the climb-out film the game calls this when the yard is not in the build; the page shows
+  // its menu with PLAY AGAIN (the gate's restart: the whole mine from floor 1). The game is not paused: its end strip stays under the menu.
+  window.__cremationEnd = function () { if (!started) return; mode = 'end'; panel = ''; wrap.style.display = 'flex'; menuBtn.style.display = 'none'; render(); };
+
+  window.__cremationReady = function () { ready = true; render(); };
+  document.addEventListener('visibilitychange', function () { if (document.hidden && started && wrap.style.display === 'none') openPause(); });
+  const loading = setInterval(function () {
+    if (ready) { clearInterval(loading); return; }
+    let f = 0;
+    if (window.__loadTotal > 0) f = Math.min(1, window.__loadDone / window.__loadTotal);
+    else { const p = document.getElementById('status-progress'); if (p && p.max > 0) f = p.value / p.max; }
+    fill.style.width = (100 * f).toFixed(1) + '%';
+    status.textContent = f >= 1 ? 'STARTING THE ENGINE' : 'LOADING ' + Math.round(100 * f) + '%';
+  }, 200);
+  function mount() { document.body.append(wrap, menuBtn); render(); if (api()) window.__cremationReady(); }
+  if (document.body) mount(); else window.addEventListener('DOMContentLoaded', mount);
+})();
+</script>
+		<script src="index.js"></script>
+		<script>
+const GODOT_CONFIG = {"args":["--"],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":25838744,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+window.__audioMode = 'stream';
+if (/[?&]ses=sample\b/.test(location.search)) { window.__audioMode = 'sample'; }
+else { GODOT_CONFIG.args.push('--audio=stream'); }
+if (/[?&]perf=1\b/.test(location.search)) { GODOT_CONFIG.args.push('--perf-hud'); GODOT_CONFIG.args.push('--perf'); }
+if (/-next\//.test(location.pathname)) {
+  var fm = /[?&]floor=([123])\b/.exec(location.search); if (fm) { GODOT_CONFIG.args.push('--floor=' + fm[1]); }
+  var em = /[?&]exitfilm=(exit_(?:a|b|zero)_(?:sealed|open))\b/.exec(location.search); if (em) { GODOT_CONFIG.args.push('--exit-film=' + em[1]); }
+}
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>
+
